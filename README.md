@@ -1,0 +1,2 @@
+# FASTQ
+FASTQ-files archivation
