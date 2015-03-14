@@ -4,6 +4,8 @@
 #include "../interface/Archiver.h"
 
 class LZ78Archiver : public Archiver {
+private:
+    FILE  *f_in_, *f_out_;
 public:
     LZ78Archiver();
     void Compress(const char *input_file_name, const char *output_file_name);

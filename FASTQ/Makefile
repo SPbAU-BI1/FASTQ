@@ -5,11 +5,11 @@ exec = main
 
 #test_srcdir = test
 
-VPATH = $(srcdir) $(srcdir)/LZ77 $(srcdir)/LZ78 $(srcdir)/interface $(bindir) $(objdir)
+VPATH = $(srcdir) $(srcdir)/LZ77 $(srcdir)/LZ78 $(srcdir)/IO $(srcdir)/interface $(bindir) $(objdir)
 CXX = g++
 CXXFLAGS = -O2 -Wall -pedantic -Wextra -std=c++0x
 
-sources = main.cpp LZ78Archiver.cpp LZ77Archiver.cpp
+sources = main.cpp LZ78Archiver.cpp LZ77Archiver.cpp PrintWriter.cpp
 objects = $(sources:.cpp=.o)
 
 all: $(bindir) $(objdir) $(exec)
