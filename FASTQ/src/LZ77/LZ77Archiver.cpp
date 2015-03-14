@@ -3,11 +3,11 @@
 LZ77Archiver::LZ77Archiver() {
 }
 
-void LZ77Archiver::compress(const char *inputFileName, const char *outputFileName) {
+void LZ77Archiver::Compress(const char *input_file_name, const char *output_file_name) {
 
 }
 
-void LZ77Archiver::decompress(const char *inputFileName, const char *outputFileName) {
+void LZ77Archiver::Decompress(const char *input_file_name, const char *output_file_name) {
 
 }
 

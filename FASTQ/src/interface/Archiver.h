@@ -5,8 +5,8 @@
 
 class Archiver {
 public:
-	virtual void compress(const char *inputFileName, const char *outputFileName) = 0;
-	virtual void decompress(const char *inputFileName, const char *outputFileName) = 0;
+    virtual void Compress(const char *input_file_name, const char *output_file_name) = 0;
+    virtual void Decompress(const char *input_file_name, const char *output_file_name) = 0;
 };
 
 #endif // _INTERFACE_ARCHIVER_H_

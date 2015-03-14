@@ -5,10 +5,10 @@
 
 class LZ77Archiver : public Archiver {
 public:
-	LZ77Archiver();
-	void compress(const char *inputFileName, const char *outputFileName);
-	void decompress(const char *inputFileName, const char *outputFileName);
-	~LZ77Archiver();
+    LZ77Archiver();
+    void Compress(const char *input_file_name, const char *output_file_name);
+    void Decompress(const char *input_file_name, const char *output_file_name);
+    ~LZ77Archiver();
 };
 
 #endif // _LZ77_LZ77ARCHIVER_H_
