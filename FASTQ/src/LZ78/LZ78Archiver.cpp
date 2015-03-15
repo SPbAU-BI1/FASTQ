@@ -1,20 +1,24 @@
 #include "LZ78Archiver.h"
-#include "../IO/PrintWriter.h"
+#include "../IO/BufferIO.h"
 
 LZ78Archiver::LZ78Archiver() {
 
 }
 
 void LZ78Archiver::Compress(const char *input_file_name, const char *output_file_name) {
-    PrintWriter *pw = new PrintWriter(input_file_name, output_file_name);
+    BufferReader *br = new BufferReader(input_file_name);
+    BufferWriter *bw = new BufferWriter(output_file_name);
 
-    delete pw;
+    delete br;
+    delete bw;
 }
 
 void LZ78Archiver::Decompress(const char *input_file_name, const char *output_file_name) {
-    PrintWriter *pw = new PrintWriter(input_file_name, output_file_name);
+    BufferReader *br = new BufferReader(input_file_name);
+    BufferWriter *bw = new BufferWriter(output_file_name);
 
-    delete pw;
+    delete bw;
+    delete br;
 }
 
 LZ78Archiver::~LZ78Archiver() {

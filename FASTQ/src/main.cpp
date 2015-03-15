@@ -1,5 +1,5 @@
 #include "LZ77/LZ77Archiver.h"
-#include "IO/PrintWriter.h"
+#include "IO/BufferIO.h"
 
 #include <stdlib.h>
 
@@ -18,18 +18,22 @@ int main(int argc, char **argv) {
     archiver->Compress(argv[1], argv[2]);
 
     delete archiver;
-// PrintWriter test
+// IO test
 
     char ch;
-    PrintWriter *pw = new PrintWriter(argv[1], argv[2]);
+    BufferReader *br = new BufferReader(argv[1]);
+    BufferWriter *bw = new BufferWriter(argv[2]);
+
     while (true) {
         try {
-            ch = pw->get_next_char();
+            ch = br->get_next_char();
         } catch(...) {
             break;
         }
-        pw->put_next_char(ch);
+
+        bw->put_next_char(ch);
     }
 
-    delete pw;
+    delete bw;
+    delete br;
 }
