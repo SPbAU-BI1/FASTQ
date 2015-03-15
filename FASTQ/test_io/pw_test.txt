@@ -1,2 +1,2 @@
-this is some text to test PrintWriter
+this is a simple test to check PrintWriter
 cheers!

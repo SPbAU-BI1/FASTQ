@@ -17,9 +17,8 @@ int main(int argc, char **argv) {
     Archiver *archiver = new LZ77Archiver();
     archiver->Compress(argv[1], argv[2]);
 
-// PrintWriter test
-
     delete archiver;
+// PrintWriter test
 
     char ch;
     PrintWriter *pw = new PrintWriter(argv[1], argv[2]);
