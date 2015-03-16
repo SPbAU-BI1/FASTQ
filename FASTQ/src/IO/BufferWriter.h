@@ -19,6 +19,6 @@ private:
     char *out_buffer_;
     size_t out_buff_l_;
     const size_t kBuffSize = 1000;
-};
+};                         
 
 #endif // IO_BUFFERWRITER_H_
