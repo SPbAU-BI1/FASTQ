@@ -22,42 +22,46 @@ void BufferReader::Read() {
     }
 }
 
-bool BufferReader::get_bit() {
+bool BufferReader::get_bit(bool *b) {
     if (in_buff_l_ == readen_size_ * 8) {
         try {
             Read();
         } catch(...) {
-            throw;
+            return false;
         }
     }
 
     size_t index = in_buff_l_ / 8;
     size_t bit_num = in_buff_l_ % 8;
-    in_buff_l_++;    
+    in_buff_l_++;
 
-    return (in_buffer_[index] & (1 << bit_num)) != 0;
+    *b = (in_buffer_[index] & (1 << bit_num)) != 0;
+    return true;
 }
 
-char BufferReader::get_char() {
-    char ch = 0;
+bool BufferReader::get_char(char *ch) {
+    *ch = 0;
+    bool b;
+
     for (int i = 0; i < 8; i++) {
-        ch |= get_bit() << i;
+        if (!get_bit(&b))
+            return false;
+        *ch |= b << i;
     }
 
-    return ch;
+    return true;
 }
 
-short BufferReader::get_short() {
-    short sh = 0;
+bool BufferReader::get_short(short *sh) {
+    sh = 0;
+    char ch1, ch2;
 
-    try {
-        sh |= get_char();
-        sh |= (short)(get_char()) * 256;
-    } catch(...) {
-        throw;
+    if (!(get_char(&ch1) & get_char(&ch2))) {
+        return false;
     }
 
-    return sh;
+    *sh = (short)ch1 + (short)ch2 * 256;
+    return true;
 }
 
 BufferReader::~BufferReader() {

@@ -15,23 +15,17 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    Archiver *archiver = new LZ77Archiver();
-    archiver->Compress(argv[1], argv[2]);
+//    Archiver *archiver = new LZ77Archiver();
+//    archiver->Compress(argv[1], argv[2]);
 
-    delete archiver;
+//    delete archiver;
 // IO test
 
     char ch;
     BufferReader *br = new BufferReader(argv[1]);
     BufferWriter *bw = new BufferWriter(argv[2]);
 
-    while (true) {
-        try {
-            ch = br->get_char();
-        } catch(...) {
-            break;
-        }
-
+    while (br->get_char(&ch)) {
         bw->put_char(ch);
     }
 
