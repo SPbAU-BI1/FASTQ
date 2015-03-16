@@ -8,9 +8,9 @@ class BufferReader {
 public:
     BufferReader(const char *input_file_name);
 
-    bool get_next_bit();
-    char get_next_char();
-    short get_next_short();
+    bool get_bit();
+    char get_char();
+    short get_short();
 
     ~BufferReader();
 private:

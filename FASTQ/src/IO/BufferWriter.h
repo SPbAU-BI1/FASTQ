@@ -9,9 +9,9 @@ public:
     BufferWriter(const char *output_file_name);
 
     void flush();
-    void put_next_bit(bool bit);
-    void put_next_char(char ch);
-    void put_next_short(short sh);
+    void put_bit(bool bit);
+    void put_char(char ch);
+    void put_short(short sh);
 
     ~BufferWriter();
 private:

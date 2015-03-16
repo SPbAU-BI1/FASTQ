@@ -15,7 +15,7 @@ void BufferWriter::flush() {
     out_buff_l_ = 0;
 }
 
-void BufferWriter::put_next_bit(bool bit) {
+void BufferWriter::put_bit(bool bit) {
     if (out_buff_l_ == kBuffSize * 8) {
         flush();
     }
@@ -26,15 +26,15 @@ void BufferWriter::put_next_bit(bool bit) {
     out_buff_l_++;
 }
 
-void BufferWriter::put_next_char(char ch) {
+void BufferWriter::put_char(char ch) {
     for (int i = 0; i < 8; i++) {
-        put_next_bit(ch & (1 << i));
+        put_bit(ch & (1 << i));
     }
 }
 
-void BufferWriter::put_next_short(short sh) {
-    put_next_char(sh & 255);
-    put_next_char(sh / 256);
+void BufferWriter::put_short(short sh) {
+    put_char(sh & 255);
+    put_char(sh / 256);
 }
 
 BufferWriter::~BufferWriter() {

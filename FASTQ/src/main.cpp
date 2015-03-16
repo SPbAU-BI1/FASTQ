@@ -27,12 +27,12 @@ int main(int argc, char **argv) {
 
     while (true) {
         try {
-            ch = br->get_next_char();
+            ch = br->get_char();
         } catch(...) {
             break;
         }
 
-        bw->put_next_char(ch);
+        bw->put_char(ch);
     }
 
     delete bw;
