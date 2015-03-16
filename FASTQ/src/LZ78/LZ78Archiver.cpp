@@ -1,5 +1,7 @@
 #include "LZ78Archiver.h"
-#include "../IO/BufferIO.h"
+
+#include "../IO/BufferReader.h"
+#include "../IO/BufferWriter.h"
 
 LZ78Archiver::LZ78Archiver() {
 

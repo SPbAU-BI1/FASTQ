@@ -1,7 +1,7 @@
 //Compress and Decompress text file with LZ77 algorithm
 
-#ifndef _LZ77_LZ77ARCHIVER_H_
-#define _LZ77_LZ77ARCHIVER_H_
+#ifndef LZ77_LZ77ARCHIVER_H_
+#define LZ77_LZ77ARCHIVER_H_
 
 #include <utility>
 
@@ -28,4 +28,4 @@ private:
     char *data_;
 };
 
-#endif // _LZ77_LZ77ARCHIVER_H_
+#endif // LZ77_LZ77ARCHIVER_H_

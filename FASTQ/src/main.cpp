@@ -1,5 +1,6 @@
 #include "LZ77/LZ77Archiver.h"
-#include "IO/BufferIO.h"
+#include "IO/BufferReader.h"
+#include "IO/BufferWriter.h"
 
 #include <stdlib.h>
 
