@@ -1,5 +1,6 @@
 #include "LZ77Archiver.h"
 
+#include <iostream>
 #include <algorithm>
 
 #include "../IO/BufferReader.h"
@@ -33,10 +34,11 @@ int LZ77Archiver::WriteCompressed(BufferWriter *bw, int index, int length, int p
         length++;
     }
     else {
+        bw->put_bit(1);
         bw->put_short(length);
         bw->put_short(prev_index);
     }
-    return index + length - 1;
+    return index + length;
 }
 
 void LZ77Archiver::Compress(const char *input_file_name, const char *output_file_name) {
@@ -73,6 +75,7 @@ void LZ77Archiver::Decompress(const char *input_file_name, const char *output_fi
     bool type;
     int cur_position = 0;
     while(br->get_bit(&type)) {
+        //std::cerr << type << std::endl;
         if (type == 0) {
             br->get_char(&data_[cur_position]);
             bw->put_char(data_[cur_position++]);
