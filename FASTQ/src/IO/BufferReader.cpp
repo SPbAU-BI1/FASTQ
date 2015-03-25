@@ -1,7 +1,7 @@
 #include "BufferReader.h"
 
 BufferReader::BufferReader(const char *input_file_name) {
-    f_in_ = fopen(input_file_name, "r");
+    f_in_ = fopen(input_file_name, "rb");
 
     in_buffer_ = new char[kBuffSize];
 
@@ -14,7 +14,7 @@ void BufferReader::Read() {
         readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);
         in_buff_l_ = 0;
     } catch(...) {
-        throw "Cant read file\n";
+        throw "Can't read file\n";
     }
 
     if (readen_size_ == 0) {

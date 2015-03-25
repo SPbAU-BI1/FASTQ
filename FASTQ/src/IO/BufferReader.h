@@ -9,7 +9,7 @@ public:
     BufferReader(const char *input_file_name);
 
     bool get_bit(bool *b);
-    bool get_char(char * ch);
+    bool get_char(char *ch);
     bool get_short(short *sh);
 
     ~BufferReader();

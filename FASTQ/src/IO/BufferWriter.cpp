@@ -1,7 +1,7 @@
 #include "BufferWriter.h"
 
 BufferWriter::BufferWriter(const char *output_file_name) {
-    f_out_ = fopen(output_file_name, "w");
+    f_out_ = fopen(output_file_name, "wb");
 
     out_buffer_ = new char[kBuffSize];
     memset(out_buffer_, 0, sizeof(out_buffer_));
@@ -11,7 +11,7 @@ BufferWriter::BufferWriter(const char *output_file_name) {
 
 void BufferWriter::flush() {
     fwrite(out_buffer_, sizeof(char), (out_buff_l_ + 7) / 8, f_out_);
-    memset(out_buffer_, 0, sizeof(out_buffer_));
+    memset(out_buffer_, 0, kBuffSize);
     out_buff_l_ = 0;
 }
 
