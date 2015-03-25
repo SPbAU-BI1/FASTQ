@@ -15,10 +15,11 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-//    Archiver *archiver = new LZ77Archiver();
-//    archiver->Compress(argv[1], argv[2]);
+    Archiver *archiver = new LZ77Archiver();
+    archiver->Compress(argv[1], argv[2]);
+    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
 
-//    delete archiver;
+    delete archiver;
 // IO test
 
     char ch;

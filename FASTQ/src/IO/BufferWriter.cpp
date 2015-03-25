@@ -33,8 +33,8 @@ void BufferWriter::put_char(char ch) {
 }
 
 void BufferWriter::put_short(short sh) {
-    put_char(sh & 255);
-    put_char(sh / 256);
+    put_char(sh & ((1 << 8) - 1));
+    put_char(sh / (1 << 8));
 }
 
 BufferWriter::~BufferWriter() {

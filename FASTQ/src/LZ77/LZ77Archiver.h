@@ -1,4 +1,4 @@
-//Compress and Decompress text file with LZ77 algorithm
+//Compresses and Decompresses text file with LZ77 algorithm
 
 #ifndef LZ77_LZ77ARCHIVER_H_
 #define LZ77_LZ77ARCHIVER_H_

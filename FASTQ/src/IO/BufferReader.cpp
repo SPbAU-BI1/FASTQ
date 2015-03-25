@@ -60,7 +60,7 @@ bool BufferReader::get_short(short *sh) {
         return false;
     }
 
-    *sh = (short)ch1 + (short)ch2 * 256;
+    *sh = (short)ch1 + (short)ch2 * (1 << 8);
     return true;
 }
 
