@@ -29,7 +29,7 @@ private:
 	static const int kBufferSize = 2 * kWindowSize + kMaxLength;
 
     //Data array, obtained from input file.
-    char *data_;
+    unsigned char *data_;
 };
 
 #endif // LZ77_LZ77ARCHIVER_H_

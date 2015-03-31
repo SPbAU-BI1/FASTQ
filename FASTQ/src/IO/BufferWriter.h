@@ -11,8 +11,8 @@ public:
     inline void flush();
 
     inline void put_bit(bool bit);
-    inline void put_char(char ch);
-    inline void put_short(short sh);
+    inline void put_char(unsigned char ch);
+    inline void put_short(unsigned short sh);
 
     ~BufferWriter();
 
@@ -40,13 +40,13 @@ inline void BufferWriter::put_bit(bool bit) {
     out_buff_l_++;
 }
 
-inline void BufferWriter::put_char(char ch) {
+inline void BufferWriter::put_char(unsigned char ch) {
     for (int i = 0; i < 8; i++) {
         put_bit(ch & (1 << i));
     }
 }
 
-inline void BufferWriter::put_short(short sh) {
+inline void BufferWriter::put_short(unsigned short sh) {
     put_char(sh & ((1 << 8) - 1));
     put_char(sh / (1 << 8));
 }
