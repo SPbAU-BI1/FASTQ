@@ -1,6 +1,9 @@
 #include "BufferReader.h"
 
+#include <iostream>
+
 BufferReader::BufferReader(const char *input_file_name) {
+    std::cerr << "WAS" << std::endl;
     f_in_ = fopen(input_file_name, "rb");
 
     in_buffer_ = new char[kBuffSize];

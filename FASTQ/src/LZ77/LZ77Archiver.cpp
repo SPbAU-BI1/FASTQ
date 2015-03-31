@@ -65,24 +65,31 @@ void LZ77Archiver::Compress(const char *input_file_name, const char *output_file
         auto result = FindBestPrev(first_not_compressed, cur_position);
         first_not_compressed = WriteCompressed(bw, first_not_compressed, result.first, result.second);
     }
+    bw->put_bit(1);
+    bw->put_short(0);
     delete br;
     delete bw;  
 }
 
 void LZ77Archiver::Decompress(const char *input_file_name, const char *output_file_name) {
+    std::cerr << "OK1" << std::endl;
     BufferReader *br = new BufferReader(input_file_name);   
+    std::cerr << "OK2" << std::endl;
     BufferWriter *bw = new BufferWriter(output_file_name);
+    std::cerr << "OK3" << std::endl;
     bool type;
     int cur_position = 0;
     while(br->get_bit(&type)) {
-        //std::cerr << type << std::endl;
+        std::cerr << type << std::endl;
         if (type == 0) {
             br->get_char(&data_[cur_position]);
             bw->put_char(data_[cur_position++]);
         }
         else {
-            short length, prev_index;
+            short length = 0, prev_index = 0;
             br->get_short(&length);
+            if (length == 0)
+            	break;
             br->get_short(&prev_index);
             for (int i = cur_position - prev_index; i < cur_position - prev_index + length; i++)
             {
