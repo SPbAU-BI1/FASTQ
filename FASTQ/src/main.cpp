@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    const int length = 9000;
+    const int length = 90000;
     Generator *generator = new Generator();
     //be careful -- overwrite input file
     generator->run(argv[1], length);
