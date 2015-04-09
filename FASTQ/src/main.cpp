@@ -1,6 +1,7 @@
 #include "LZ77/LZ77Archiver.h"
 #include "IO/BufferReader.h"
 #include "IO/BufferWriter.h"
+#include "generator/Generator.h"
 
 #include <stdlib.h>
 
@@ -14,6 +15,13 @@ int main(int argc, char **argv) {
         printf(ANSI_COLOR_RESET);
         exit(1);
     }
+
+    const int length = 9000;
+    Generator *generator = new Generator();
+    //be careful -- overwrite input file
+    generator->run(argv[1], length);
+	delete generator;
+ 
 
     Archiver *archiver = new LZ77Archiver();
     archiver->Compress(argv[1], argv[2]);
