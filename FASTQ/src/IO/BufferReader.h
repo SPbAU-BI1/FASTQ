@@ -3,14 +3,15 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
 
 class BufferReader {
 public:
     BufferReader(const char *input_file_name);
 
     inline bool get_bit(bool *b);
-    inline bool get_char(char *ch);
-    inline bool get_short(short *sh);
+    inline bool get_char(unsigned char *ch);
+    inline bool get_short(unsigned short *sh);
 
     ~BufferReader();
 
@@ -39,7 +40,7 @@ inline bool BufferReader::get_bit(bool *b) {
     return true;
 }
 
-inline bool BufferReader::get_char(char *ch) {
+inline bool BufferReader::get_char(unsigned char *ch) {
     *ch = 0;
     bool b;
 
@@ -52,14 +53,14 @@ inline bool BufferReader::get_char(char *ch) {
     return true;
 }
 
-inline bool BufferReader::get_short(short *sh) {
-    sh = 0;
-    char ch1, ch2;
-
+inline bool BufferReader::get_short(unsigned short *sh) {
+    *sh = 0;
+    unsigned char ch1, ch2;
+    
     if (!(get_char(&ch1) & get_char(&ch2))) {
         return false;
     }
-
+    
     *sh = (short)ch1 + (short)ch2 * (1 << 8);
     return true;
 }
