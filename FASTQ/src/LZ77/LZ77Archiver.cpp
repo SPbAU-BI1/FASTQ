@@ -14,8 +14,7 @@ std::pair <int, int> LZ77Archiver::FindBestPrev(int index, int size)
 {
     int max_length = 0;
     int optimal_dist = 0;
-    for (int j = std::max(0, index - kBufferSize); j < index; j++)
-    {
+    for (int j = std::max(0, index - kBufferSize); j < index; j++) {
         int max_cur_length = kMaxLength;
         for (int g = 0; g < kMaxLength; g++) {
             if (index + g == size || data_[index + g] != data_[j + g]) {
@@ -23,12 +22,12 @@ std::pair <int, int> LZ77Archiver::FindBestPrev(int index, int size)
                 break;
             }   
         } 
-    	if (max_length < max_cur_length) {
-		    max_length = max_cur_length;
-    		optimal_dist = index - j;
-	    }
-	}
-	return std::make_pair(max_length, optimal_dist);
+        if (max_length < max_cur_length) {
+            max_length = max_cur_length;
+            optimal_dist = index - j;
+        }
+    }
+    return std::make_pair(max_length, optimal_dist);
 }
 
 int LZ77Archiver::WriteCompressed(BufferWriter *bw, int index, int length, int prev_index) {
@@ -61,7 +60,7 @@ void LZ77Archiver::Compress(const char *input_file_name, const char *output_file
             first_not_compressed -= last_useful;
         }                                      
         if (cur_position - first_not_compressed >= kMaxLength) {
-	        auto result = FindBestPrev(first_not_compressed, cur_position);
+            auto result = FindBestPrev(first_not_compressed, cur_position);
             first_not_compressed = WriteCompressed(bw, first_not_compressed, result.first, result.second);
         }
     }
@@ -89,7 +88,7 @@ void LZ77Archiver::Decompress(const char *input_file_name, const char *output_fi
             unsigned short length = 0, prev_index = 0;
             br->get_short(&length);
             if (length == 0)
-            	break;
+                break;
             br->get_short(&prev_index);
             int last_element = cur_position - prev_index + length;
             for (int i = cur_position - prev_index; i < last_element; i++)
@@ -98,8 +97,7 @@ void LZ77Archiver::Decompress(const char *input_file_name, const char *output_fi
                 bw->put_char(data_[cur_position++]);
             }
         }
-        if (cur_position > kBufferSize - kMaxLength)
-        {
+        if (cur_position > kBufferSize - kMaxLength) {
             int last_useful = cur_position - kWindowSize;
             for (int i = last_useful; i < cur_position; i++)
                 data_[i - last_useful] = data_[i];
