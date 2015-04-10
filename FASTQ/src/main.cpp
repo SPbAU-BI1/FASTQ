@@ -2,6 +2,7 @@
 #include "LZ78/LZ78Archiver.h"
 #include "IO/BufferReader.h"
 #include "IO/BufferWriter.h"
+#include "generator/Generator.h"
 
 #include <stdlib.h>
 
@@ -16,13 +17,22 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    const int length = 90000;
+    Generator *generator = new Generator();
+    //be careful -- overwrite input file
+    generator->run(argv[1], length);
+	delete generator;
+ 
+
     Archiver *archiver = new LZ77Archiver();
     archiver->Compress(argv[1], argv[2]);
     archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
+
 /*
     Archiver *archiver = new LZ78Archiver();
     archiver->Compress(argv[1], argv[2]);
 //    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
-*/    
+*/
+
     delete archiver;
 }
