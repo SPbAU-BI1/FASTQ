@@ -1,4 +1,5 @@
 #include "LZ77/LZ77Archiver.h"
+#include "LZ78/LZ78Archiver.h"
 #include "IO/BufferReader.h"
 #include "IO/BufferWriter.h"
 #include "generator/Generator.h"
@@ -26,6 +27,12 @@ int main(int argc, char **argv) {
     Archiver *archiver = new LZ77Archiver();
     archiver->Compress(argv[1], argv[2]);
     archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
+
+/*
+    Archiver *archiver = new LZ78Archiver();
+    archiver->Compress(argv[1], argv[2]);
+//    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
+*/
 
     delete archiver;
 }
