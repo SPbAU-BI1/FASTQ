@@ -9,7 +9,7 @@ VPATH = $(srcdir) $(srcdir)/LZ77 $(srcdir)/LZ78 $(srcdir)/IO $(srcdir)/interface
 CXX = g++
 CXXFLAGS = -O2 -Wall -pedantic -Wextra -std=c++11
 
-sources = main.cpp LZ78Archiver.cpp LZ77Archiver.cpp BufferReader.cpp BufferWriter.cpp
+sources = main.cpp LZ78Archiver.cpp LZ77Archiver.cpp BufferReader.cpp BufferWriter.cpp Bor.cpp
 objects = $(sources:.cpp=.o)
 
 all: $(bindir) $(objdir) $(exec)
