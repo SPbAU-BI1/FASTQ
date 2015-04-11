@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 
     Archiver *archiver = new LZ77Archiver();
     archiver->Compress(argv[1], argv[2]);
-    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
+//    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
 
 /*
     Archiver *archiver = new LZ78Archiver();
