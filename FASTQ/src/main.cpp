@@ -34,11 +34,14 @@ int main(int argc, char **argv) {
 //    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
 
 
+    int filename_length = strlen(argv[1]);
+    char *filename_decompressed = new char[filename_length + strlen("_decompressed") + 1]();
+    strcat(filename_decompressed, argv[1]);
+    strcat(filename_decompressed, "_decompressed");
     Archiver *archiver = new LZ78Archiver();
     archiver->Compress(argv[1], argv[2]);
-    cerr << "Compressed!" << endl;
-    archiver->Decompress(argv[2], "test_io/test.dec");
-    cerr << "Decompressed!" << endl;
+    archiver->Decompress(argv[2], filename_decompressed);
+    delete filename_decompressed;
 
 
     delete archiver;
