@@ -35,9 +35,9 @@ int main(int argc, char **argv) {
 
 
     Archiver *archiver = new LZ78Archiver();
-    archiver->Compress("test_io/test_in.txt", "test_io/test_out.txt");
+    archiver->Compress(argv[1], argv[2]);
     cerr << "Compressed!" << endl;
-    archiver->Decompress("test_io/test_out.txt", "test_io/test_in.dec");
+    archiver->Decompress(argv[2], "test_io/test.dec");
     cerr << "Decompressed!" << endl;
 
 
