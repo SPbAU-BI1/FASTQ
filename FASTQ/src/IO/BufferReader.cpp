@@ -5,7 +5,7 @@
 BufferReader::BufferReader(const char *input_file_name) {
     f_in_ = fopen(input_file_name, "rb");
 
-    in_buffer_ = new char[1000];
+    in_buffer_ = new char[kBuffSize];
 
     readen_size_ = 0;
     in_buff_l_ = 0;
