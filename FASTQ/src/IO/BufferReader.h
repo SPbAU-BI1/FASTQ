@@ -43,10 +43,11 @@ inline bool BufferReader::get_bit(bool *b) {
 inline bool BufferReader::get_char(unsigned char *ch) {
     *ch = 0;
     bool b;
-
+    
     for (int i = 0; i < 8; i++) {
         if (!get_bit(&b))
             return false;
+
         *ch |= b << i;
     }
 
@@ -60,8 +61,8 @@ inline bool BufferReader::get_short(unsigned short *sh) {
     if (!(get_char(&ch1) & get_char(&ch2))) {
         return false;
     }
-    
-    *sh = (short)ch1 + (short)ch2 * (1 << 8);
+
+    *sh = (unsigned short)ch1 + (unsigned short)ch2 * (1 << 8);
     return true;
 }
 

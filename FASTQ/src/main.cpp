@@ -9,6 +9,11 @@
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
+//FOR DEBUG
+#include <bits/stdc++.h>
+using namespace std;
+//FOR DEBUG
+
 int main(int argc, char **argv) {
     if (argc != 3) {
         printf(ANSI_COLOR_RED);
@@ -19,20 +24,22 @@ int main(int argc, char **argv) {
 
     const int length = 90000;
     Generator *generator = new Generator();
-    //be careful -- overwrite input file
+    //be careful -- overwrites input file
     generator->run(argv[1], length);
 	delete generator;
  
 
-    Archiver *archiver = new LZ77Archiver();
-    archiver->Compress(argv[1], argv[2]);
+//    Archiver *archiver = new LZ77Archiver();
+//    archiver->Compress(argv[1], argv[2]);
 //    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
 
-/*
+
     Archiver *archiver = new LZ78Archiver();
-    archiver->Compress(argv[1], argv[2]);
-//    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
-*/
+    archiver->Compress("test_io/test_in.txt", "test_io/test_out.txt");
+    cerr << "Compressed!" << endl;
+    archiver->Decompress("test_io/test_out.txt", "test_io/test_in.dec");
+    cerr << "Decompressed!" << endl;
+
 
     delete archiver;
 }

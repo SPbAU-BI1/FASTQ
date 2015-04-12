@@ -9,6 +9,6 @@ void Generator::run(const char *filename, int length) {
     srand(time(NULL));
     
     for (int i = 0; i < length; i++)
-        fprintf(f_out, "%c", alphabet[rand() % 4]);   
+        fprintf(f_out, "%c", alphabet[rand() % 4]);
 	fclose(f_out);
 }

@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <stdlib.h>
+#include <climits>
 
 inline size_t symbol_to_number(char ch) {
     switch(ch) {
@@ -59,6 +60,8 @@ public:
     inline size_t get_id();
     inline size_t get_arr_size();
 
+    inline char get_symbol();
+
     ~BorNode();
 private:
     BorNode **symbol_ptr_;
@@ -67,6 +70,10 @@ private:
     char symbol_;
     BorNode* father_;
 };
+
+inline char BorNode::get_symbol() {
+    return symbol_;
+}
 
 inline size_t BorNode::get_arr_size() {
     return kArrSize;
@@ -81,21 +88,17 @@ inline BorNode* BorNode::get_ptr(size_t index) {
 }
 
 inline void BorNode::add_ptr(size_t index, size_t *size) {
-    if (symbol_ptr_[index] != NULL)
-        return;
-    else {
-        char ch = number_to_symbol(index);
-        symbol_ptr_[index] = new BorNode(this, ch);
-        (*size)++;
-        symbol_ptr_[index]->set_id(*size);
-    }
+    char ch = number_to_symbol(index);
+    symbol_ptr_[index] = new BorNode(this, ch);
+    (*size)++;
+    symbol_ptr_[index]->set_id(*size);
 }
 
 inline void BorNode::set_id(size_t new_id) {
     id_ = new_id;
 }
 
-inline size_t BorNode:: get_id() {
+inline size_t BorNode::get_id() {
     return id_;
 }
 
@@ -106,15 +109,44 @@ public:
 
     inline size_t size();
     inline size_t get_cur_id();
+    inline size_t get_bor_max_size();
+
+    inline BorNode* get_cur();
+    inline BorNode* get_root();
+    inline BorNode* get_last_added();
+
+    inline void set_cur(BorNode *new_cur);
+
     std::pair<bool, size_t> add_node(char ch);
 
     ~Bor();
 private:
     BorNode *root_;
     BorNode *cur_;
+    BorNode *last_added_;
     size_t size_;
     const size_t kBorSize;
 };
+
+inline BorNode* Bor::get_last_added() {
+    return last_added_;
+}
+
+inline BorNode* Bor::get_cur() {
+    return cur_;
+}
+
+inline BorNode* Bor::get_root() {
+    return root_;
+}
+
+inline void Bor::set_cur(BorNode *new_cur) {
+    cur_ = new_cur;
+}
+
+inline size_t Bor::get_bor_max_size() {
+    return kBorSize;
+}
 
 inline size_t Bor::get_cur_id() {
     return cur_->get_id();
