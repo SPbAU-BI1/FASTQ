@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    const int length = 90000;
+    const int length = 10000000;
     Generator *generator = new Generator();
     //be careful -- overwrites input file
     generator->run(argv[1], length);

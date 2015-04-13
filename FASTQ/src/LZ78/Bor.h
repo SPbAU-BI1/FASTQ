@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <climits>
 
+
 inline size_t symbol_to_number(char ch) {
     switch(ch) {
         case 'A':
@@ -46,6 +47,7 @@ inline char number_to_symbol(size_t num) {
             throw "Wut?";
     }
 }
+
 
 class BorNode {
 public:
@@ -102,7 +104,6 @@ inline size_t BorNode::get_id() {
     return id_;
 }
 
-
 class Bor {
 public:
     Bor();
@@ -155,5 +156,6 @@ inline size_t Bor::get_cur_id() {
 inline size_t Bor::size() {
     return size_;
 }
+
 
 #endif //LZ78_BOR_H_

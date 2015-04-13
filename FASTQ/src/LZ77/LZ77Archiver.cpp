@@ -14,7 +14,7 @@ std::pair <int, int> LZ77Archiver::FindBestPrev(int index, int size)
 {
     int max_length = 0;
     int optimal_dist = 0;
-    for (int j = std::max(0, index - kBufferSize); j < index; j++) {
+    for (int j = std::max(0, index - kWindowSize); j < index; j++) {
         int max_cur_length = kMaxLength;
         for (int g = 0; g < kMaxLength; g++) {
             if (index + g == size || data_[index + g] != data_[j + g]) {
