@@ -2,17 +2,13 @@
 #include "LZ78/LZ78Archiver.h"
 #include "IO/BufferReader.h"
 #include "IO/BufferWriter.h"
-#include "generator/Generator.h"
+#include "Generator/Generator.h"
+#include "StreamParser/StreamParser.h"
 
 #include <stdlib.h>
 
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_RESET "\x1b[0m"
-
-//FOR DEBUG
-#include <bits/stdc++.h>
-using namespace std;
-//FOR DEBUG
 
 int main(int argc, char **argv) {
     if (argc != 3) {
@@ -22,17 +18,22 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    const int length = 10000000;
+    const int length = 10000;
     Generator *generator = new Generator();
     //be careful -- overwrites input file
     generator->run(argv[1], length);
-	delete generator;
+    delete generator;
  
 
-//    Archiver *archiver = new LZ77Archiver();
-//    archiver->Compress(argv[1], argv[2]);
-//    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
+    StreamParser *A = new StreamParser;
+    A->Parse(argv[1]);
+    A->Join(argv[1]);
 
+    /*
+    Archiver *archiver = new LZ77Archiver();
+    archiver->Compress(argv[1], argv[2]);
+    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
+    */
 
     int filename_length = strlen(argv[1]);
     char *filename_decompressed = new char[filename_length + strlen("_decompressed") + 1]();

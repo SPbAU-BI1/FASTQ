@@ -1,7 +1,7 @@
 #ifndef LZ78_LZ78ARCHIVER_H_
 #define LZ78_LZ78ARCHIVER_H_
 
-#include "../interface/Archiver.h"
+#include "../Interface/Archiver.h"
 #include <utility>
 #include "Bor.h"
 #include "../IO/BufferReader.h"

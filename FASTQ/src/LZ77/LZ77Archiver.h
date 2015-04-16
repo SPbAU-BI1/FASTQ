@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "../interface/Archiver.h"
+#include "../Interface/Archiver.h"
 
 class BufferWriter;
 
@@ -25,8 +25,8 @@ private:
     static const int kWindowSize = 1 << 15;
     //Size of maximal length, that could be compressed.
     static const int kMaxLength = 100;
-	//Size of buffer
-	static const int kBufferSize = 2 * kWindowSize + kMaxLength;
+    //Size of buffer
+    static const int kBufferSize = 2 * kWindowSize + kMaxLength;
 
     //Data array, obtained from input file.
     unsigned char *data_;

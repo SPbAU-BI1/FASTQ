@@ -1,10 +1,11 @@
-#include "newFASTQ.h"
-#include "BufferReader.h"
-#include "BufferWriter.h"
+#include "StreamParser.h"
+#include "../IO/BufferReader.h"
+#include "../IO/BufferWriter.h"
+
 #include <algorithm>
 #include <string>                         
 
-void FASTQArchiver::Parse(const char *input_file_name) {
+void StreamParser::Parse(const char *input_file_name) {
     
     char** s = new char*[4];    
     for (int i = 0; i < 4; i++) {        
@@ -42,13 +43,10 @@ void FASTQArchiver::Parse(const char *input_file_name) {
                                            
     delete [] s;
     delete br; 
-    for (int i = 0; i < 4; i++) {
-        delete bw[i];
-    }    
     delete [] bw;
 }
 
-void FASTQArchiver::Join(const char *input_file_name) {
+void StreamParser::Join(const char *input_file_name) {
     
     char** s = new char*[5];    
     for (int i = 0; i < 5; i++) {    
@@ -77,9 +75,6 @@ void FASTQArchiver::Join(const char *input_file_name) {
         }
     }
 
-    for (int i = 0; i < 4; i++) {
-        delete br[i];
-    }    
     delete [] br;
     delete bw;
 
@@ -89,12 +84,3 @@ void FASTQArchiver::Join(const char *input_file_name) {
     delete [] s;
     
 }
-
-/*int main(){
-    FASTQArchiver A;
-    A.Parse("myf.txt");
-    for(int i = 0; i < 4; i++) {        
-        std::cout << A.FileSize[i] << std:: endl;  
-    }
-    A.Join("myf.txt");
-}  */
