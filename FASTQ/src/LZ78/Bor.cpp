@@ -1,9 +1,10 @@
 #include "Bor.h"
 
-BorNode::BorNode(BorNode *father, char symbol): kArrSize(7) {
+BorNode::BorNode(BorNode *father, char symbol): kArrSize(128) {
     symbol_ptr_ = new BorNode*[kArrSize];
     for (size_t i = 0; i < kArrSize; i++)
         symbol_ptr_[i] = NULL;
+    
     father_ = father;
     symbol_ = symbol;
 }
@@ -14,7 +15,7 @@ BorNode::~BorNode() {
 
 Bor::Bor(): kBorSize(USHRT_MAX - 5) {
     size_ = 0;
-    root_ = new BorNode(NULL, '_');
+    root_ = new BorNode(NULL, 0);
     cur_ = root_;
     last_added_ = NULL;
 
@@ -25,7 +26,7 @@ Bor::Bor(): kBorSize(USHRT_MAX - 5) {
 
 std::pair<bool, size_t> Bor::add_node(char ch) {
     BorNode *ptr;
-    size_t index = symbol_to_number(ch);
+    size_t index = (size_t)ch;
     last_added_ = NULL;
 
     if ((ptr = cur_->get_ptr(index)) != NULL) {
@@ -35,7 +36,7 @@ std::pair<bool, size_t> Bor::add_node(char ch) {
         size_t ret = cur_->get_id();
 
         if (size_ <= kBorSize) {
-            cur_->add_ptr(index, &size_);
+            cur_->add_ptr(ch, &size_);
             last_added_ = cur_->get_ptr(index);
             last_added_->set_id(size_); 
         }

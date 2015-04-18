@@ -11,7 +11,7 @@ for (( i=0; i<n; i++ ))
         ./run.sh
     fi
 
-    s=`diff test_io/test_in.txt test_io/test.dec`
+    s=`diff test_io/test_in.txt test_io/test_in.txt_decompressed`
     if [[ "$s" != "" ]]
     then
         printf "test number $i: Failed\n"
@@ -19,6 +19,8 @@ for (( i=0; i<n; i++ ))
         exit 1
     else
         printf "test number $i: OK\n"
+        cut -c 1-10 test_io/test_in.txt
     fi
 
+    sleep 1
 }

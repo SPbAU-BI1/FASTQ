@@ -1,10 +1,5 @@
 #include "LZ78Archiver.h"
 
-//FOR DEBUG
-#include <bits/stdc++.h>
-using namespace std;
-//FOR DEBUG
-
 LZ78Archiver::LZ78Archiver() {
 
 }

@@ -23,12 +23,11 @@ int main(int argc, char **argv) {
     //be careful -- overwrites input file
     generator->run(argv[1], length);
     delete generator;
- 
-
+    /* 
     StreamParser *A = new StreamParser;
     A->Parse(argv[1]);
     A->Join(argv[1]);
-
+    */
     /*
     Archiver *archiver = new LZ77Archiver();
     archiver->Compress(argv[1], argv[2]);

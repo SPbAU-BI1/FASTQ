@@ -5,50 +5,6 @@
 #include <stdlib.h>
 #include <climits>
 
-
-inline size_t symbol_to_number(char ch) {
-    switch(ch) {
-        case 'A':
-            return 0;
-        case 'C':
-            return 1;
-        case 'G':
-            return 2;
-        case 'T':
-            return 3;
-        case 'N':
-            return 4;
-        case 10:
-            return 5;
-        case 13:
-            return 6;
-        default:
-            throw "Wut?";
-    }
-}
-
-inline char number_to_symbol(size_t num) {
-    switch(num) {
-        case 0:
-            return 'A';
-        case 1:
-            return 'C';
-        case 2:
-            return 'G';
-        case 3:
-            return 'T';
-        case 4:
-            return 'N';
-        case 5:
-            return 10;
-        case 6:
-            return 13;
-        default:
-            throw "Wut?";
-    }
-}
-
-
 class BorNode {
 public:
     BorNode(BorNode *father, char symbol);
@@ -56,7 +12,7 @@ public:
     inline BorNode* get_ptr(size_t index);
     inline BorNode* get_father();
     
-    inline void add_ptr(size_t ch, size_t *size);
+    inline void add_ptr(char ch, size_t *size);
     inline void set_id(size_t new_id);
     
     inline size_t get_id();
@@ -89,8 +45,8 @@ inline BorNode* BorNode::get_ptr(size_t index) {
     return symbol_ptr_[index];
 }
 
-inline void BorNode::add_ptr(size_t index, size_t *size) {
-    char ch = number_to_symbol(index);
+inline void BorNode::add_ptr(char ch, size_t *size) {
+    size_t index = (size_t)ch;
     symbol_ptr_[index] = new BorNode(this, ch);
     (*size)++;
     symbol_ptr_[index]->set_id(*size);
