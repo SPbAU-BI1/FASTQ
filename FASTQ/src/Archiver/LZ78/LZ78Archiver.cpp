@@ -1,10 +1,13 @@
 #include "LZ78Archiver.h"
 
+#include "../../InputOutput/Interface/Reader.h"
+#include "../../InputOutput/Interface/Writer.h"
+
 LZ78Archiver::LZ78Archiver() {
 
 }
 
-char LZ78Archiver::PrintSubString(BufferWriter *bw, Bor *bor, char *s, BorNode *cur) {
+char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cur) {
     size_t top = 0;
 
     while (cur != bor->get_root()) {
@@ -13,39 +16,31 @@ char LZ78Archiver::PrintSubString(BufferWriter *bw, Bor *bor, char *s, BorNode *
     }
 
     for (int i = (int)top - 1; i >= 0; i--) {
-        bw->put_char(s[i]);
+        writer->put_char(s[i]);
     }
 
     return s[top - 1];
 }
 
-void LZ78Archiver::Compress(const char *input_file_name, const char *output_file_name) {
-    BufferReader *br = new BufferReader(input_file_name);
-    BufferWriter *bw = new BufferWriter(output_file_name);
-
+void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
     Bor *bor = new Bor();
 
     unsigned char ch;
     std::pair<bool, size_t> res;
 
-    while (br->get_char(&ch)) {
+    while (reader->get_char(&ch)) {
         res = bor->add_node((char)ch);
         if (res.first) {
-            bw->put_short((short)res.second);
+            writer->put_short((short)res.second);
         }
     }
 
-    bw->put_short((short)bor->get_cur_id());
+    writer->put_short((short)bor->get_cur_id());
 
     delete bor;
-    delete br;
-    delete bw;
 }
 
-void LZ78Archiver::Decompress(const char *input_file_name, const char *output_file_name) {
-    BufferReader *br = new BufferReader(input_file_name);
-    BufferWriter *bw = new BufferWriter(output_file_name);
-
+void LZ78Archiver::Decompress(Reader *reader, Writer *writer) {
     Bor *bor = new Bor();
     BorNode **nodes_ptr = new BorNode*[bor->get_bor_max_size() + 1];
     BorNode *cur = bor->get_cur();
@@ -59,12 +54,12 @@ void LZ78Archiver::Decompress(const char *input_file_name, const char *output_fi
     char last_char = '_';
     bool printed = false;
 
-    while (br->get_short(&sh)) {
+    while (reader->get_short(&sh)) {
         printed = false;
 
         if (sh != bor->size() + 1) {
             cur = nodes_ptr[sh];
-            last_char = PrintSubString(bw, bor, s, cur);
+            last_char = PrintSubString(writer, bor, s, cur);
             printed = true;
         }
         
@@ -80,7 +75,7 @@ void LZ78Archiver::Decompress(const char *input_file_name, const char *output_fi
 
         if (!printed) {
             cur = nodes_ptr[sh];
-            last_char = PrintSubString(bw, bor, s, cur);
+            last_char = PrintSubString(writer, bor, s, cur);
         }
 
         last_node_from_input = nodes_ptr[sh];
@@ -89,8 +84,6 @@ void LZ78Archiver::Decompress(const char *input_file_name, const char *output_fi
     delete s;
     delete [] nodes_ptr;
     delete bor;
-    delete bw;
-    delete br;
 }
 
 LZ78Archiver::~LZ78Archiver() {

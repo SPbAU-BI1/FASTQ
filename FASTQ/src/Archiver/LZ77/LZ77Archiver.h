@@ -7,19 +7,20 @@
 
 #include "../Interface/Archiver.h"
 
-class BufferWriter;
+class Reader;
+class Writer;
 
 class LZ77Archiver : public Archiver {
 public:
     LZ77Archiver();    
-    void Compress(const char *input_file_name, const char *output_file_name);
-    void Decompress(const char *input_file_name, const char *output_file_name);
+    void Compress(Reader *reader, Writer *writer);
+    void Decompress(Reader *reader, Writer *writer);
     ~LZ77Archiver();
 private:
     //Finds length and position of maximal block earlier identical with block, beginning with index.  
     std::pair<int, int> FindBestPrev(int index, int size);
     //Writes compressed block beginning with index and returns index of first not compressed symbol.
-    int WriteCompressed(BufferWriter *bw, int index, int length, int prev_index);
+    int WriteCompressed(Writer *writer, int index, int length, int prev_index);
 
     //Size of sliding window.
     static const int kWindowSize = 1 << 15;

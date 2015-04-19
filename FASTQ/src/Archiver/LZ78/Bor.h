@@ -1,5 +1,5 @@
-#ifndef LZ78_BOR_H_
-#define LZ78_BOR_H_
+#ifndef _BOR_H_
+#define _BOR_H_
 
 #include <utility>
 #include <stdlib.h>
@@ -114,4 +114,4 @@ inline size_t Bor::size() {
 }
 
 
-#endif //LZ78_BOR_H_
+#endif //_BOR_H_

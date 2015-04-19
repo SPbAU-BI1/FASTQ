@@ -1,14 +1,21 @@
-#include "LZ77/LZ77Archiver.h"
-#include "LZ78/LZ78Archiver.h"
-#include "IO/BufferReader.h"
-#include "IO/BufferWriter.h"
+#include "Archiver/LZ77/LZ77Archiver.h"
+#include "Archiver/LZ78/LZ78Archiver.h"
+#include "InputOutput/Buffered/BufferedReader.h"
+#include "InputOutput/Buffered/BufferedWriter.h"
 #include "Generator/Generator.h"
-#include "StreamParser/StreamParser.h"
+#include "InputOutput/StreamParser/StreamParser.h"
 
 #include <stdlib.h>
 
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_RESET "\x1b[0m"
+
+char* concatenate(const char *s1, const char *s2) {
+    char *result = new char[strlen(s1) + strlen(s2) + 1]();
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
+}
 
 int main(int argc, char **argv) {
     if (argc != 3) {
@@ -18,31 +25,27 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    const int length = 10000;
+    const int length = 100000;
     Generator *generator = new Generator();
     //be careful -- overwrites input file
-    generator->run(argv[1], length);
+    //generator->run(argv[1], length);
     delete generator;
-    /* 
-    StreamParser *A = new StreamParser;
-    A->Parse(argv[1]);
-    A->Join(argv[1]);
-    */
-    /*
-    Archiver *archiver = new LZ77Archiver();
-    archiver->Compress(argv[1], argv[2]);
-    archiver->Decompress(argv[2], strcat(argv[1], "_decompressed"));
-    */
 
-    int filename_length = strlen(argv[1]);
-    char *filename_decompressed = new char[filename_length + strlen("_decompressed") + 1]();
-    strcat(filename_decompressed, argv[1]);
-    strcat(filename_decompressed, "_decompressed");
     Archiver *archiver = new LZ78Archiver();
-    archiver->Compress(argv[1], argv[2]);
-    archiver->Decompress(argv[2], filename_decompressed);
-    delete filename_decompressed;
 
+    char *filename_decompressed = concatenate(argv[1], "_decompressed");
+    Reader *compress_reader = new BufferedReader(argv[1]);
+    Writer *compress_writer = new BufferedWriter(argv[2]);
+    archiver->Compress(compress_reader, compress_writer);
+    delete compress_reader;
+    delete compress_writer;
+    
+    Reader *decompress_reader = new BufferedReader(argv[2]);
+    Writer *decompress_writer = new BufferedWriter(filename_decompressed);
+    archiver->Decompress(decompress_reader, decompress_writer);
+    delete decompress_reader;
+    delete decompress_writer;
+    delete filename_decompressed;
 
     delete archiver;
 }

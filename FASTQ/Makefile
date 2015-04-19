@@ -5,11 +5,11 @@ exec = main
 
 #test_srcdir = test
 
-VPATH = $(srcdir) $(srcdir)/LZ77 $(srcdir)/LZ78 $(srcdir)/IO $(srcdir)/Interface $(srcdir)/Generator $(srcdir)/StreamParser $(bindir) $(objdir)
+VPATH = $(srcdir) $(srcdir)/Archiver/LZ77 $(srcdir)/Archiver/LZ78 $(srcdir)/InputOutput/Buffered $(srcdir)/Generator $(srcdir)/InputOutput/StreamParser $(bindir) $(objdir)
 CXX = g++
 CXXFLAGS = -O2 -Wall -pedantic -Wextra -std=c++11
 
-sources = main.cpp LZ78Archiver.cpp LZ77Archiver.cpp BufferReader.cpp BufferWriter.cpp Generator.cpp Bor.cpp StreamParser.cpp
+sources = main.cpp LZ78Archiver.cpp LZ77Archiver.cpp BufferedReader.cpp BufferedWriter.cpp Generator.cpp Bor.cpp StreamParser.cpp
 objects = $(sources:.cpp=.o)
 
 all: $(bindir) $(objdir) $(exec)

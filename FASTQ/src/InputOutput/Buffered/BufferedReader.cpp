@@ -1,29 +1,22 @@
-#ifndef IO_BUFFERREADER_H_
-#define IO_BUFFERREADER_H_
+#include "BufferedReader.h"
 
-#include <stdio.h>
-#include <string.h>
 #include <iostream>
 
-class BufferReader {
-public:
-    BufferReader(const char *input_file_name);
+BufferedReader::BufferedReader(const char *input_file_name) {
+    f_in_ = fopen(input_file_name, "rb");
 
-    inline bool get_bit(bool *b);
-    inline bool get_char(unsigned char *ch);
-    inline bool get_short(unsigned short *sh);
+    in_buffer_ = new char[kBuffSize];
 
-    ~BufferReader();
+    readen_size_ = 0;
+    in_buff_l_ = 0;
+}
 
-private:
-    inline void Read();
-    FILE *f_in_;
-    char *in_buffer_;
-    size_t in_buff_l_, readen_size_;
-    const size_t kBuffSize = 1000;
-};
+BufferedReader::~BufferedReader() {
+    fclose(f_in_);
+    delete in_buffer_;
+}
 
-inline bool BufferReader::get_bit(bool *b) {
+bool BufferedReader::get_bit(bool *b) {
     if (in_buff_l_ == readen_size_ * 8) {
         try {
             Read();
@@ -40,7 +33,7 @@ inline bool BufferReader::get_bit(bool *b) {
     return true;
 }
 
-inline bool BufferReader::get_char(unsigned char *ch) {
+bool BufferedReader::get_char(unsigned char *ch) {
     *ch = 0;
     bool b;
 
@@ -53,7 +46,7 @@ inline bool BufferReader::get_char(unsigned char *ch) {
     return true;
 }
 
-inline bool BufferReader::get_short(unsigned short *sh) {
+bool BufferedReader::get_short(unsigned short *sh) {
     *sh = 0;
     unsigned char ch1, ch2;
 
@@ -65,7 +58,7 @@ inline bool BufferReader::get_short(unsigned short *sh) {
     return true;
 }
 
-inline void BufferReader::Read() {
+void BufferedReader::Read() {
     try {
         memset(in_buffer_, 0, kBuffSize);
         readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);
@@ -79,4 +72,3 @@ inline void BufferReader::Read() {
     }
 }
 
-#endif // IO_BUFFERREADER_H_
