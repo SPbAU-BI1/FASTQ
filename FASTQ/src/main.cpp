@@ -3,7 +3,7 @@
 #include "InputOutput/Buffered/BufferedReader.h"
 #include "InputOutput/Buffered/BufferedWriter.h"
 #include "Generator/Generator.h"
-#include "InputOutput/StreamParser/StreamParser.h"
+#include "InputOutput/StreamReader/StreamReader.h"
 
 #include <stdlib.h>
 
@@ -32,7 +32,15 @@ int main(int argc, char **argv) {
     delete generator;
 
     Archiver *archiver = new LZ78Archiver();
-
+    Writer *compress_writer = new BufferedWriter(argv[2]); 
+    for (int i = 0; i < 4; i++)
+    {
+        Reader *compress_reader = new StreamReader(argv[1], 4, i);
+        archiver->Compress(compress_reader, compress_writer);
+        delete compress_reader; 
+    }
+    
+    /*
     char *filename_decompressed = concatenate(argv[1], "_decompressed");
     Reader *compress_reader = new BufferedReader(argv[1]);
     Writer *compress_writer = new BufferedWriter(argv[2]);
@@ -46,6 +54,7 @@ int main(int argc, char **argv) {
     delete decompress_reader;
     delete decompress_writer;
     delete filename_decompressed;
+    */
 
     delete archiver;
 }

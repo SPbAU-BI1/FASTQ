@@ -16,7 +16,7 @@ BufferedReader::~BufferedReader() {
     delete in_buffer_;
 }
 
-bool BufferedReader::get_bit(bool *b) {
+bool BufferedReader::GetBit(bool *b) {
     if (in_buff_l_ == readen_size_ * 8) {
         try {
             Read();
@@ -33,12 +33,12 @@ bool BufferedReader::get_bit(bool *b) {
     return true;
 }
 
-bool BufferedReader::get_char(unsigned char *ch) {
+bool BufferedReader::GetChar(unsigned char *ch) {
     *ch = 0;
     bool b;
 
     for (int i = 0; i < 8; i++) {
-        if (!get_bit(&b))
+        if (!GetBit(&b))
             return false;
         *ch |= b << i;
     }
@@ -46,11 +46,11 @@ bool BufferedReader::get_char(unsigned char *ch) {
     return true;
 }
 
-bool BufferedReader::get_short(unsigned short *sh) {
+bool BufferedReader::GetShort(unsigned short *sh) {
     *sh = 0;
     unsigned char ch1, ch2;
 
-    if (!(get_char(&ch1) & get_char(&ch2))) {
+    if (!(GetChar(&ch1) & GetChar(&ch2))) {
         return false;
     }
 

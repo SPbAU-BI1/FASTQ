@@ -3,6 +3,8 @@
 #include "../../InputOutput/Interface/Reader.h"
 #include "../../InputOutput/Interface/Writer.h"
 
+#include <stdio.h>
+
 LZ78Archiver::LZ78Archiver() {
 
 }
@@ -16,7 +18,7 @@ char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cu
     }
 
     for (int i = (int)top - 1; i >= 0; i--) {
-        writer->put_char(s[i]);
+        writer->PutChar(s[i]);
     }
 
     return s[top - 1];
@@ -24,18 +26,17 @@ char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cu
 
 void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
     Bor *bor = new Bor();
-
     unsigned char ch;
     std::pair<bool, size_t> res;
 
-    while (reader->get_char(&ch)) {
+    while (reader->GetChar(&ch)) {
         res = bor->add_node((char)ch);
         if (res.first) {
-            writer->put_short((short)res.second);
+            writer->PutShort((short)res.second);
         }
     }
 
-    writer->put_short((short)bor->get_cur_id());
+    writer->PutShort((short)bor->get_cur_id());
 
     delete bor;
 }
@@ -54,7 +55,7 @@ void LZ78Archiver::Decompress(Reader *reader, Writer *writer) {
     char last_char = '_';
     bool printed = false;
 
-    while (reader->get_short(&sh)) {
+    while (reader->GetShort(&sh)) {
         printed = false;
 
         if (sh != bor->size() + 1) {

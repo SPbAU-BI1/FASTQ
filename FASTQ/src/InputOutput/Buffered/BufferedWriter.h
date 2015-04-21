@@ -12,9 +12,9 @@ public:
 
     void flush();
 
-    void put_bit(bool bit);
-    void put_char(unsigned char ch);
-    void put_short(unsigned short sh);
+    void PutBit(bool bit);
+    void PutChar(unsigned char ch);
+    void PutShort(unsigned short sh);
 
     ~BufferedWriter();
 

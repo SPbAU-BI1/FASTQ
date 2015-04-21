@@ -32,14 +32,14 @@ std::pair <int, int> LZ77Archiver::FindBestPrev(int index, int size)
 
 int LZ77Archiver::WriteCompressed(Writer *writer, int index, int length, int prev_index) {
     if (length < 3) {
-        writer->put_char(0);
-        writer->put_char(data_[index]);
+        writer->PutChar(0);
+        writer->PutChar(data_[index]);
         length = 1;
     }
     else {
-        writer->put_char(1);
-        writer->put_short(length);
-        writer->put_short(prev_index);
+        writer->PutChar(1);
+        writer->PutShort(length);
+        writer->PutShort(prev_index);
     }
     return index + length;
 }
@@ -48,7 +48,7 @@ void LZ77Archiver::Compress(Reader *reader, Writer *writer) {
     int cur_position = 0;
     int first_not_compressed = 0;
     unsigned char c;
-    while (reader->get_char(&c)) {
+    while (reader->GetChar(&c)) {
         data_[cur_position++] = c;
         if (cur_position == kBufferSize) {
             int last_useful = first_not_compressed - kWindowSize;
@@ -66,29 +66,29 @@ void LZ77Archiver::Compress(Reader *reader, Writer *writer) {
         auto result = FindBestPrev(first_not_compressed, cur_position);
         first_not_compressed = WriteCompressed(writer, first_not_compressed, result.first, result.second);
     }
-    writer->put_char(1);
-    writer->put_short(0);
+    writer->PutChar(1);
+    writer->PutShort(0);
 }
 
 void LZ77Archiver::Decompress(Reader *reader, Writer *writer) {
     unsigned char type;
     int cur_position = 0;
-    while(reader->get_char(&type)) {
+    while(reader->GetChar(&type)) {
         if (type == 0) {
-            reader->get_char(&data_[cur_position]);
-            writer->put_char(data_[cur_position++]);
+            reader->GetChar(&data_[cur_position]);
+            writer->PutChar(data_[cur_position++]);
         }
         else {
             unsigned short length = 0, prev_index = 0;
-            reader->get_short(&length);
+            reader->GetShort(&length);
             if (length == 0)
                 break;
-            reader->get_short(&prev_index);
+            reader->GetShort(&prev_index);
             int last_element = cur_position - prev_index + length;
             for (int i = cur_position - prev_index; i < last_element; i++)
             {
                 data_[cur_position] = data_[i];
-                writer->put_char(data_[cur_position++]);
+                writer->PutChar(data_[cur_position++]);
             }
         }
         if (cur_position > kBufferSize - kMaxLength) {

@@ -11,9 +11,9 @@ class BufferedReader: public Reader {
 public:
     BufferedReader(const char *input_file_name);
 
-    bool get_bit(bool *b);
-    bool get_char(unsigned char *ch);
-    bool get_short(unsigned short *sh);
+    bool GetBit(bool *b);
+    bool GetChar(unsigned char *ch);
+    bool GetShort(unsigned short *sh);
 
     ~BufferedReader();
 
