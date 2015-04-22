@@ -16,7 +16,7 @@ private:
 public:
     LZ78Archiver();
     void Compress(Reader *reader, Writer *writer);
-    bool OneStepOfDecompress(Reader *reader, Writer *writer);
+    bool PutNextDecompressedPart(Reader *reader, Writer *writer);
     void Decompress(Reader *reader, Writer *writer);
     ~LZ78Archiver();
 private: //some variables which we need during decompress

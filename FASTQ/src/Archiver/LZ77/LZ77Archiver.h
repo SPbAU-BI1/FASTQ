@@ -15,6 +15,7 @@ public:
     LZ77Archiver();    
     void Compress(Reader *reader, Writer *writer);
     void Decompress(Reader *reader, Writer *writer);
+    bool PutNextDecompressedPart(Reader *reader, Writer *writer); 
     ~LZ77Archiver();
 private:
     //Finds length and position of maximal block earlier identical with block, beginning with index.  

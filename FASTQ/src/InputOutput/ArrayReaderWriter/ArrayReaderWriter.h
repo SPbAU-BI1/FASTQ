@@ -11,8 +11,10 @@ public:
     bool GetShort(unsigned short *sh);
     void PutChar(unsigned char ch);
     void PutShort(unsigned short sh);
+    void Flush();
     ~ArrayReaderWriter();
 private:
+    void CorrectPosition(int &position);
     static const int kBufferSize = 1 << 16;
     unsigned char *data_;
     int read_position_;

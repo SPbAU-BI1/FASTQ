@@ -14,6 +14,7 @@ public:
     virtual void Compress(Reader *reader, Writer *writer) = 0;
     //Decompresses data read from reader and saves it to writer
     virtual void Decompress(Reader *reader, Writer *writer) = 0;
+    virtual bool PutNextDecompressedPart(Reader *reader, Writer *writer) = 0; 
     virtual ~Archiver() {}
 };
 

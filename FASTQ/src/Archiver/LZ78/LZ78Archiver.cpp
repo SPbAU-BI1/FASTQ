@@ -52,7 +52,7 @@ void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
     delete bor;
 }
 
-bool LZ78Archiver::OneStepOfDecompress(Reader *reader, Writer *writer) {
+bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
     bool printed = false;
     unsigned short sh;
 
@@ -88,7 +88,7 @@ bool LZ78Archiver::OneStepOfDecompress(Reader *reader, Writer *writer) {
 }
 
 void LZ78Archiver::Decompress(Reader *reader, Writer *writer) {
-    while (OneStepOfDecompress(reader, writer));
+    while (PutNextDecompressedPart(reader, writer));
     writer->Flush();
 }
 

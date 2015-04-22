@@ -70,6 +70,10 @@ void LZ77Archiver::Compress(Reader *reader, Writer *writer) {
     writer->PutShort(0);
 }
 
+bool LZ77Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
+    return 0;
+}
+
 void LZ77Archiver::Decompress(Reader *reader, Writer *writer) {
     unsigned char type;
     int cur_position = 0;
