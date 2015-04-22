@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
     delete generator;
 
     Archiver *archiver = new LZ78Archiver();
+/*
     Writer *compress_writer = new BufferedWriter(argv[2]); 
     for (int i = 0; i < 4; i++)
     {
@@ -39,7 +40,20 @@ int main(int argc, char **argv) {
         archiver->Compress(compress_reader, compress_writer);
         delete compress_reader; 
     }
-    
+*/
+
+//    Reader *decompress_reader = new BufferedReader(argv[1]);
+//    Writer *decompress_writer = new BufferedWriter(argv[2]);
+
+//    archiver->Compress(decompress_reader, decompress_writer);
+
+    Reader *decompress_reader = new BufferedReader(argv[1]);
+    Writer *decompress_writer = new BufferedWriter(argv[2]);
+
+    archiver->Decompress(decompress_reader, decompress_writer);
+
+//    delete decompress_reader;
+
     /*
     char *filename_decompressed = concatenate(argv[1], "_decompressed");
     Reader *compress_reader = new BufferedReader(argv[1]);

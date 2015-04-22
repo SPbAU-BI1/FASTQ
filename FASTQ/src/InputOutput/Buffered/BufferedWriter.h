@@ -10,7 +10,7 @@ class BufferedWriter: public Writer {
 public:
     BufferedWriter(const char *output_file_name);
 
-    void flush();
+    void Flush();
 
     void PutBit(bool bit);
     void PutChar(unsigned char ch);

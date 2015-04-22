@@ -11,12 +11,12 @@ BufferedWriter::BufferedWriter(const char *output_file_name) {
 }
 
 BufferedWriter::~BufferedWriter() {
-    flush();
+    Flush();
     fclose(f_out_);
     delete out_buffer_;
 }
 
-void BufferedWriter::flush() {
+void BufferedWriter::Flush() {
     fwrite(out_buffer_, sizeof(char), (out_buff_l_ + 7) / 8, f_out_);
     memset(out_buffer_, 0, kBuffSize);
     out_buff_l_ = 0;
@@ -24,7 +24,7 @@ void BufferedWriter::flush() {
 
 void BufferedWriter::PutBit(bool bit) {
     if (out_buff_l_ == kBuffSize * 8) {
-        flush();
+        Flush();
     }
 
     size_t index = out_buff_l_ / 8;

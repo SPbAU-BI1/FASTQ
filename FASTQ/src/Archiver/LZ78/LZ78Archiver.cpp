@@ -6,7 +6,16 @@
 #include <stdio.h>
 
 LZ78Archiver::LZ78Archiver() {
+    m_bor_ = new Bor();
+    m_nodes_ptr_ = new BorNode*[m_bor_->get_bor_max_size() + 1];
+    m_cur_ = m_bor_->get_cur();
 
+    for (size_t i = 0; i < m_cur_->get_arr_size(); i++)
+        m_nodes_ptr_[i + 1] = m_cur_->get_ptr(i);
+
+    m_last_node_from_input_ = NULL;
+    m_s_ = new char[m_bor_->get_bor_max_size() + 1];
+    m_last_char_ = '_';
 }
 
 char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cur) {
@@ -38,55 +47,54 @@ void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
 
     writer->PutShort((short)bor->get_cur_id());
 
+    writer->Flush();
+
     delete bor;
+}
+
+bool LZ78Archiver::OneStepOfDecompress(Reader *reader, Writer *writer) {
+    bool printed = false;
+    unsigned short sh;
+
+    if (!reader->GetShort(&sh))
+        return false;
+
+    printed = false;
+
+    if (sh != m_bor_->size() + 1) {
+        m_cur_ = m_nodes_ptr_[sh];
+        m_last_char_ = PrintSubString(writer, m_bor_, m_s_, m_cur_);
+        printed = true;
+    }
+    
+    if (m_last_node_from_input_ != NULL) {
+        m_bor_->set_cur(m_last_node_from_input_);
+        m_bor_->add_node(m_last_char_);
+
+        BorNode *last_added;
+        if ((last_added = m_bor_->get_last_added()) != NULL) {
+            m_nodes_ptr_[last_added->get_id()] = last_added;
+        }
+    }
+
+    if (!printed) {
+        m_cur_ = m_nodes_ptr_[sh];
+        m_last_char_ = PrintSubString(writer, m_bor_, m_s_, m_cur_);
+    }
+
+    m_last_node_from_input_ = m_nodes_ptr_[sh];
+
+    return true;
 }
 
 void LZ78Archiver::Decompress(Reader *reader, Writer *writer) {
-    Bor *bor = new Bor();
-    BorNode **nodes_ptr = new BorNode*[bor->get_bor_max_size() + 1];
-    BorNode *cur = bor->get_cur();
-
-    for (size_t i = 0; i < cur->get_arr_size(); i++)
-        nodes_ptr[i + 1] = cur->get_ptr(i);
-
-    BorNode *last_node_from_input = NULL;
-    unsigned short sh;
-    char *s = new char[bor->get_bor_max_size() + 1];
-    char last_char = '_';
-    bool printed = false;
-
-    while (reader->GetShort(&sh)) {
-        printed = false;
-
-        if (sh != bor->size() + 1) {
-            cur = nodes_ptr[sh];
-            last_char = PrintSubString(writer, bor, s, cur);
-            printed = true;
-        }
-        
-        if (last_node_from_input != NULL) {
-            bor->set_cur(last_node_from_input);
-            bor->add_node(last_char);
-
-            BorNode *last_added;
-            if ((last_added = bor->get_last_added()) != NULL) {
-                nodes_ptr[last_added->get_id()] = last_added;
-            }
-        }
-
-        if (!printed) {
-            cur = nodes_ptr[sh];
-            last_char = PrintSubString(writer, bor, s, cur);
-        }
-
-        last_node_from_input = nodes_ptr[sh];
-    }
-
-    delete s;
-    delete [] nodes_ptr;
-    delete bor;
+    while (OneStepOfDecompress(reader, writer));
+    writer->Flush();
 }
 
 LZ78Archiver::~LZ78Archiver() {
-
+    delete m_bor_;
+    delete [] m_nodes_ptr_;
+    delete m_s_;
+    delete m_last_node_from_input_;
 }
