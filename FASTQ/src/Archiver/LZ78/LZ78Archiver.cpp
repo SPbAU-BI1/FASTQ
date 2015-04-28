@@ -60,13 +60,13 @@ bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
         return false;
 
     printed = false;
-
+//sometimes given node is the one which we were about to add at the previous step
     if (sh != m_bor_->size() + 1) {
         m_cur_ = m_nodes_ptr_[sh];
         m_last_char_ = PrintSubString(writer, m_bor_, m_s_, m_cur_);
         printed = true;
     }
-    
+//just checks if this is the first step. If it's not, then we need to add a node to previous cur using last char
     if (m_last_node_from_input_ != NULL) {
         m_bor_->set_cur(m_last_node_from_input_);
         m_bor_->add_node(m_last_char_);
@@ -76,12 +76,12 @@ bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
             m_nodes_ptr_[last_added->get_id()] = last_added;
         }
     }
-
+//if first condition didn't work, we need to add node and return some string
     if (!printed) {
         m_cur_ = m_nodes_ptr_[sh];
         m_last_char_ = PrintSubString(writer, m_bor_, m_s_, m_cur_);
     }
-
+//current node is the last
     m_last_node_from_input_ = m_nodes_ptr_[sh];
 
     return true;
