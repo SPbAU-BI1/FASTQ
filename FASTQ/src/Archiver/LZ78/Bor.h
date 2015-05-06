@@ -4,6 +4,13 @@
 #include <utility>
 #include <stdlib.h>
 #include <climits>
+#include <list>
+
+//For debug
+#include <cassert>
+#include <iostream>
+#include <stdio.h>
+//For debug
 
 class BorNode {
 public:
@@ -11,29 +18,34 @@ public:
 
     inline BorNode* get_ptr(size_t index);
     inline BorNode* get_father();
-    
-    inline void add_ptr(char ch, size_t *size);
-    inline void set_id(size_t new_id);
-    
-    inline size_t get_id();
-    inline size_t get_arr_size();
 
-    inline char get_symbol();
+    inline void add_ptr(char ch, size_t *size, size_t new_id);
+    inline void delete_ptr(char ch, size_t *size); // see comment below
+    inline void set_id(size_t new_id);
+
+    inline size_t get_id() const;
+    inline size_t get_arr_size() const;
+
+    inline char get_symbol() const;
 
     ~BorNode();
+public:
+    size_t cnt_;
 private:
     BorNode **symbol_ptr_;
-    size_t id_;
-    const size_t kArrSize;
-    char symbol_;
     BorNode* father_;
+    
+    const size_t kArrSize;
+    size_t id_;
+    
+    char symbol_;
 };
 
-inline char BorNode::get_symbol() {
+inline char BorNode::get_symbol() const {
     return symbol_;
 }
 
-inline size_t BorNode::get_arr_size() {
+inline size_t BorNode::get_arr_size() const {
     return kArrSize;
 }
 
@@ -45,18 +57,25 @@ inline BorNode* BorNode::get_ptr(size_t index) {
     return symbol_ptr_[index];
 }
 
-inline void BorNode::add_ptr(char ch, size_t *size) {
+inline void BorNode::add_ptr(char ch, size_t *size, size_t new_id) {
     size_t index = (size_t)ch;
     symbol_ptr_[index] = new BorNode(this, ch);
+    symbol_ptr_[index]->set_id(new_id);
     (*size)++;
-    symbol_ptr_[index]->set_id(*size);
+}
+//This function is only need for clearing bor. You shall not use it for any other purposes.
+//It may cause memory leaks if you re just using delete_ptr and don't delete element manually.
+inline void BorNode::delete_ptr(char ch, size_t *size) {
+    size_t index = (size_t)ch;
+    symbol_ptr_[index] = nullptr;
+    (*size)--;
 }
 
 inline void BorNode::set_id(size_t new_id) {
     id_ = new_id;
 }
 
-inline size_t BorNode::get_id() {
+inline size_t BorNode::get_id() const {
     return id_;
 }
 
@@ -64,16 +83,19 @@ class Bor {
 public:
     Bor();
 
-    inline size_t size();
-    inline size_t get_cur_id();
-    inline size_t get_bor_max_size();
+    inline size_t size() const;
+    inline size_t get_cur_id() const;
+    inline size_t get_bor_max_size() const;
+    inline size_t get_next_id() const;
+    inline size_t get_lowest_id() const;
 
     inline BorNode* get_cur();
     inline BorNode* get_root();
     inline BorNode* get_last_added();
 
     inline void set_cur(BorNode *new_cur);
-
+    
+    void add_on_way(BorNode *cur);
     std::pair<bool, size_t> add_node(char ch);
 
     ~Bor();
@@ -81,8 +103,20 @@ private:
     BorNode *root_;
     BorNode *cur_;
     BorNode *last_added_;
+
+    std::list<BorNode*> *clear_buckets_;
+
     size_t size_;
     const size_t kBorSize;
+
+    void Clear(); // delete kBorSize / 2 nodes
+    void ResetCounts(BorNode *cur); // reset all counts to zero
+    void FillBuckets(BorNode *cur); // fill clear_buckets_ array
+    void DeleteBucket(size_t id); // delete 1 bucket which is passed throw it's index
+
+    bool *is_used_id_;
+    size_t lowest_id_free_;
+    size_t next_id_free_;
 };
 
 inline BorNode* Bor::get_last_added() {
@@ -101,16 +135,24 @@ inline void Bor::set_cur(BorNode *new_cur) {
     cur_ = new_cur;
 }
 
-inline size_t Bor::get_bor_max_size() {
+inline size_t Bor::get_bor_max_size() const {
     return kBorSize;
 }
 
-inline size_t Bor::get_cur_id() {
+inline size_t Bor::get_cur_id() const {
     return cur_->get_id();
 }
 
-inline size_t Bor::size() {
+inline size_t Bor::size() const {
     return size_;
+}
+
+inline size_t Bor::get_next_id() const {
+    return next_id_free_;
+}
+
+inline size_t Bor::get_lowest_id() const {
+    return lowest_id_free_;
 }
 
 
