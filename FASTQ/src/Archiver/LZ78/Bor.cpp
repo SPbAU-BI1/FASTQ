@@ -1,8 +1,5 @@
 #include "Bor.h"
     
-    using std::cerr;
-    using std::endl;
-
 BorNode::BorNode(BorNode *father, char symbol): kArrSize(128) {
     symbol_ptr_ = new BorNode*[kArrSize];
     for (size_t i = 0; i < kArrSize; i++)
@@ -18,23 +15,24 @@ BorNode::~BorNode() {
     delete [] symbol_ptr_;
 }
 
-Bor::Bor(): kBorSize(USHRT_MAX) {
+Bor::Bor(): kBorSize(USHRT_MAX-1) {
+
     size_ = 0;
     root_ = new BorNode(nullptr, 0);
     cur_ = root_;
     last_added_ = nullptr;
     clear_buckets_ = new std::list<BorNode*>[kBorSize + 2];
 
-    is_used_id_ = new bool[kBorSize];
+    is_used_id_ = new bool[kBorSize + 2];
     for (size_t i = 0; i < kBorSize + 2; i++)
         is_used_id_[i] = false;
     is_used_id_[0] = true;
     lowest_id_free_ = 1;
 
     for (size_t i = 0; i < root_->get_arr_size(); i++) {
-       root_->add_ptr(i, &size_, lowest_id_free_);
-       is_used_id_[lowest_id_free_] = true;
-       lowest_id_free_++;
+        root_->add_ptr(i, &size_, lowest_id_free_);
+        is_used_id_[lowest_id_free_] = true;
+        lowest_id_free_++;
     }
     next_id_free_ = lowest_id_free_ + 1;
 }
@@ -141,7 +139,7 @@ void Bor::Clear() {
     double ratio = 0.9;
     int new_size = (int)(size_ * ratio);
     for (size_t i = 0; i < kBorSize; i++) {
-        if (size_ > new_size && !clear_buckets_[i].empty()) {
+        if ((int) size_ > new_size && !clear_buckets_[i].empty()) {
             DeleteBucket(i);
         }
     }

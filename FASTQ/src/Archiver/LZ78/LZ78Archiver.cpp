@@ -12,7 +12,7 @@ LZ78Archiver::LZ78Archiver() {
 
     for (size_t i = 0; i < m_cur_->get_arr_size(); i++)
         m_nodes_ptr_[i + 1] = m_cur_->get_ptr(i);
-
+    
     m_last_node_from_input_ = nullptr;
     m_s_ = new char[m_bor_->get_bor_max_size() + 1];
     m_last_char_ = '_';
@@ -43,12 +43,11 @@ void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
     while (reader->GetChar(&ch)) {
         res = bor->add_node((char)ch);
         if (res.first) {
-            writer->PutShort((short)res.second); // write next Node code in output, if new vertex were added
+            writer->PutShort((unsigned short)res.second); // write next Node code in output, if new vertex were added
         }
     }
 
-    writer->PutShort((short)bor->get_cur_id());
-
+    writer->PutShort((unsigned short)bor->get_cur_id());
     writer->Flush();
 
     delete bor;
@@ -59,9 +58,12 @@ bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
     unsigned short sh;
 
     if (!reader->GetShort(&sh)) {
-        std::cerr << "what?" << std::endl;
+        //std::cerr << "what?" << std::endl;
         return false;
     }
+
+    if (sh == ((1 << 16) - 1))
+        return false;
 
     printed = false;
 // sometimes given node is the one which we were about to add at the previous step

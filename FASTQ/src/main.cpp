@@ -27,7 +27,8 @@ int main(int argc, char **argv) {
     }
     FASTQArchiver *archiver = new FASTQArchiver();
     archiver->Compress(argv[1], argv[2]);
-    //archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
+    archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
+    
     /*
     Reader *compress_reader = new BufferedReader(argv[1]);
     Writer *compress_writer = new BufferedWriter(argv[2]);

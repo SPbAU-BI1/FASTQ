@@ -3,14 +3,8 @@
 
 #include <utility>
 #include <stdlib.h>
-#include <climits>
+#include <limits.h>
 #include <list>
-
-//For debug
-#include <cassert>
-#include <iostream>
-#include <stdio.h>
-//For debug
 
 class BorNode {
 public:

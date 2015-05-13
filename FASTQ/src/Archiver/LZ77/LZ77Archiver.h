@@ -15,22 +15,21 @@ public:
     LZ77Archiver();    
     void Compress(Reader *reader, Writer *writer);
     void Decompress(Reader *reader, Writer *writer);
-    bool PutNextDecompressedPart(Reader *reader, Writer *writer); 
     ~LZ77Archiver();
 private:
-    //Finds length and position of maximal block earlier identical with block, beginning with index.  
+    //Finds length and position of maximal block earlier identical with block, beginning with index  
     std::pair<int, int> FindBestPrev(int index, int size);
-    //Writes compressed block beginning with index and returns index of first not compressed symbol.
+    //Writes compressed block beginning with index and returns index of first not compressed symbol
     int WriteCompressed(Writer *writer, int index, int length, int prev_index);
 
-    //Size of sliding window.
+    //Size of sliding window
     static const int kWindowSize = 1 << 15;
-    //Size of maximal length, that could be compressed.
+    //Size of maximal length, that could be compressed
     static const int kMaxLength = 100;
     //Size of buffer
     static const int kBufferSize = 2 * kWindowSize + kMaxLength;
 
-    //Data array, obtained from input file.
+    //Data array, obtained from input file
     unsigned char *data_;
 };
 
