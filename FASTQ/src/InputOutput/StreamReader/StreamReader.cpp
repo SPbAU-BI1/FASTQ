@@ -13,14 +13,14 @@ StreamReader::StreamReader(const char *input_file_name, int block_size, int row_
 bool StreamReader::GetChar(unsigned char *ch) {
     if (cur_position_ == cur_length_) {
         int read_row_count = block_size_;
-        if (cur_length_ == -1)
+        if (cur_length_ == -1)                      
             read_row_count = row_number_ + 1;
+        //Reads block of unnecessary lines
         for (int i = 0; i < read_row_count; i++)
             if (fgets(buffer_, kBufferSize - 1, f_in_) == NULL)
                 return 0;
         cur_position_ = 0;
         cur_length_ = strlen(buffer_);
-        //fprintf(stderr, "%s\n", buffer_);       
     }
     *ch = buffer_[cur_position_++];
     return 1;   

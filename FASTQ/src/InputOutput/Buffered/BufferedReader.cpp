@@ -42,7 +42,6 @@ bool BufferedReader::GetChar(unsigned char *ch) {
             return false;
         *ch |= b << i;
     }
-
     return true;
 }
 

@@ -1,3 +1,5 @@
+//generates random string containing length symbols. Each symbol is one from {'A', 'C', 'G', 'T'}.
+
 #ifndef _GENERATOR_H_
 #define _GENERATOR_H_
 

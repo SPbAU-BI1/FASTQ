@@ -1,3 +1,5 @@
+//Reads only lines such it's number is row_number mod block_size
+
 #ifndef _STREAMREADER_H_
 #define _STREAMREADER_H_
 

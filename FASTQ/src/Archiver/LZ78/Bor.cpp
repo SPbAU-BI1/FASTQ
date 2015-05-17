@@ -1,8 +1,5 @@
 #include "Bor.h"
     
-    using std::cerr;
-    using std::endl;
-
 BorNode::BorNode(BorNode *father, char symbol): kArrSize(128) {
     symbol_ptr_ = new BorNode*[kArrSize];
     for (size_t i = 0; i < kArrSize; i++)
@@ -18,8 +15,9 @@ BorNode::~BorNode() {
     delete [] symbol_ptr_;
 }
 
-Bor::Bor(): kBorSize(USHRT_MAX - 1) {
+Bor::Bor(): kBorSize(USHRT_MAX - 1), kToClean(5000) {
     size_ = 0;
+    last_clear_ = 0;
     root_ = new BorNode(nullptr, 0);
     cur_ = root_;
     last_added_ = nullptr;
@@ -32,9 +30,9 @@ Bor::Bor(): kBorSize(USHRT_MAX - 1) {
     lowest_id_free_ = 1;
 
     for (size_t i = 0; i < root_->get_arr_size(); i++) {
-       root_->add_ptr(i, &size_, lowest_id_free_);
-       is_used_id_[lowest_id_free_] = true;
-       lowest_id_free_++;
+        root_->add_ptr(i, &size_, lowest_id_free_);
+        is_used_id_[lowest_id_free_] = true;
+        lowest_id_free_++;
     }
     next_id_free_ = lowest_id_free_ + 1;
 }
@@ -52,6 +50,7 @@ std::pair<bool, size_t> Bor::add_node(char ch) {
         return std::make_pair(0, cur_->get_id());
     } else {
         size_t ret = cur_->get_id();
+        last_clear_++;
 
         if (size_ < kBorSize) {
             cur_->add_ptr(ch, &size_, lowest_id_free_);
@@ -64,7 +63,8 @@ std::pair<bool, size_t> Bor::add_node(char ch) {
             while (next_id_free_ <= kBorSize && is_used_id_[next_id_free_])
                 next_id_free_++;
         } else {
-            Clear();
+            if (last_clear_ >= size_)
+                Clear();
         }
 
         cur_ = root_->get_ptr(index);
@@ -138,15 +138,16 @@ void Bor::Clear() {
 
     FillBuckets(root_);
 
-    double ratio = 0.9;
+    double ratio = std::max(0.0, (double)(size_ - kToClean) / size_);
     int new_size = (int)(size_ * ratio);
     for (size_t i = 0; i < kBorSize; i++) {
-        if (size_ > new_size && !clear_buckets_[i].empty()) {
+        if ((int) size_ > new_size && !clear_buckets_[i].empty()) {
             DeleteBucket(i);
         }
     }
 
-//    ResetCounts(root_);
+    last_clear_ = 0;
+//    ResetCounts(root_); //without it algorithm works better.
 }
 
 Bor::~Bor() {

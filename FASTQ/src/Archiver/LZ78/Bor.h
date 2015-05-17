@@ -3,14 +3,8 @@
 
 #include <utility>
 #include <stdlib.h>
-#include <climits>
+#include <limits.h>
 #include <list>
-
-//For debug
-#include <cassert>
-#include <iostream>
-#include <stdio.h>
-//For debug
 
 class BorNode {
 public:
@@ -37,7 +31,7 @@ private:
     
     const size_t kArrSize;
     size_t id_;
-    
+
     char symbol_;
 };
 
@@ -117,6 +111,9 @@ private:
     bool *is_used_id_;
     size_t lowest_id_free_;
     size_t next_id_free_;
+
+    size_t last_clear_;
+    const size_t kToClean;
 };
 
 inline BorNode* Bor::get_last_added() {
