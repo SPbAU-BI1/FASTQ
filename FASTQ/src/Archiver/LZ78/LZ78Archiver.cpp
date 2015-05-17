@@ -6,8 +6,9 @@
 #include <stdio.h>
 
 LZ78Archiver::LZ78Archiver() {
+    m_comp_bor_ = nullptr;
+
     m_bor_ = new Bor();
-    m_comp_bor_ = new Bor();
     m_nodes_ptr_ = new BorNode*[m_bor_->get_bor_max_size() + 1];
     m_cur_ = m_bor_->get_cur();
 
@@ -17,6 +18,33 @@ LZ78Archiver::LZ78Archiver() {
     m_last_node_from_input_ = nullptr;
     m_s_ = new char[m_bor_->get_bor_max_size() + 1];
     m_last_char_ = '_';
+}
+
+bool LZ78Archiver::PutNextCompressedPart(Reader *reader, Writer *writer) {
+    m_flag_ = false;
+
+    if (reader->GetChar(&m_ch_)) {
+        m_res_ = m_comp_bor_->add_node((char)m_ch_);
+        if (m_res_.first) {
+            writer->PutShort((unsigned short)m_res_.second); // write next Node code in output, if new vertex were added
+        }
+        m_flag_ = true;
+    }
+
+    if (!m_flag_) {
+        writer->PutShort((unsigned short)m_comp_bor_->get_cur_id());
+    }
+
+    writer->Flush();
+
+    return m_flag_;
+}
+
+void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
+    delete m_comp_bor_;
+
+    m_comp_bor_ = new Bor();
+    while (PutNextCompressedPart(reader, writer));
 }
 
 char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cur) {
@@ -36,40 +64,23 @@ char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cu
     return s[top - 1];
 }
 
-void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
-    unsigned char ch;
-    std::pair<bool, size_t> res;
-
-    while (reader->GetChar(&ch)) {
-        res = m_comp_bor_->add_node((char)ch);
-        if (res.first) {
-            writer->PutShort((unsigned short)res.second); // write next Node code in output, if new vertex were added
-        }
-    }
-
-    writer->PutShort((unsigned short)m_comp_bor_->get_cur_id());
-    writer->Flush();
-}
-
 bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
-    bool printed = false;
-    unsigned short sh;
+    m_printed_ = false;
 
-    if (!reader->GetShort(&sh)) {
+    if (!reader->GetShort(&m_sh_)) {
         return false;
     }
 
-    if (sh == ((1 << 16) - 1))
+    if (m_sh_ == ((1 << 16) - 1))
         return false;
 
-    printed = false;
 // sometimes given node is the one which we were about to add at the previous step
 // in this case we handle a normal situations when last added to bot node is not a
 // son of last_added
-    if (sh != m_bor_->get_lowest_id()) {
-        m_cur_ = m_nodes_ptr_[sh];
+    if (m_sh_ != m_bor_->get_lowest_id()) {
+        m_cur_ = m_nodes_ptr_[m_sh_];
         m_last_char_ = PrintSubString(writer, m_bor_, m_s_, m_cur_);
-        printed = true;
+        m_printed_ = true;
     }
 // just checks if this is the first step. If it's not, then we need to add a node to previous cur using last char
     if (m_last_node_from_input_ != nullptr) {
@@ -83,12 +94,12 @@ bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
         }
     }
 // if first condition didn't work, we need to add node and return some string
-    if (!printed) {
-        m_cur_ = m_nodes_ptr_[sh];
+    if (!m_printed_) {
+        m_cur_ = m_nodes_ptr_[m_sh_];
         m_last_char_ = PrintSubString(writer, m_bor_, m_s_, m_cur_);
     }
 // current node is the last
-    m_last_node_from_input_ = m_nodes_ptr_[sh];
+    m_last_node_from_input_ = m_nodes_ptr_[m_sh_];
 
     writer->Flush();
     return true;
@@ -99,7 +110,6 @@ void LZ78Archiver::Decompress(Reader *reader, Writer *writer) {
     while (PutNextDecompressedPart(reader, writer)) {
         cnt++;
     }
-    writer->Flush();
 }
 
 LZ78Archiver::~LZ78Archiver() {
