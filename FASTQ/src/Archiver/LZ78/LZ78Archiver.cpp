@@ -7,6 +7,7 @@
 
 LZ78Archiver::LZ78Archiver() {
     m_bor_ = new Bor();
+    m_comp_bor_ = new Bor();
     m_nodes_ptr_ = new BorNode*[m_bor_->get_bor_max_size() + 1];
     m_cur_ = m_bor_->get_cur();
 
@@ -36,21 +37,18 @@ char LZ78Archiver::PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cu
 }
 
 void LZ78Archiver::Compress(Reader *reader, Writer *writer) {
-    Bor *bor = new Bor();
     unsigned char ch;
     std::pair<bool, size_t> res;
 
     while (reader->GetChar(&ch)) {
-        res = bor->add_node((char)ch);
+        res = m_comp_bor_->add_node((char)ch);
         if (res.first) {
             writer->PutShort((unsigned short)res.second); // write next Node code in output, if new vertex were added
         }
     }
 
-    writer->PutShort((unsigned short)bor->get_cur_id());
+    writer->PutShort((unsigned short)m_comp_bor_->get_cur_id());
     writer->Flush();
-
-    delete bor;
 }
 
 bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
@@ -58,7 +56,6 @@ bool LZ78Archiver::PutNextDecompressedPart(Reader *reader, Writer *writer) {
     unsigned short sh;
 
     if (!reader->GetShort(&sh)) {
-        //std::cerr << "what?" << std::endl;
         return false;
     }
 
@@ -107,6 +104,7 @@ void LZ78Archiver::Decompress(Reader *reader, Writer *writer) {
 
 LZ78Archiver::~LZ78Archiver() {
     delete m_bor_;
+    delete m_comp_bor_;
     delete [] m_nodes_ptr_;
     delete m_s_;
     delete m_last_node_from_input_;

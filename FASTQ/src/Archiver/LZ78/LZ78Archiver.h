@@ -20,6 +20,7 @@ public:
     void Decompress(Reader *reader, Writer *writer);
     ~LZ78Archiver();
 private: //some variables which we need during decompress
+    Bor *m_comp_bor_;
     Bor *m_bor_;
     BorNode **m_nodes_ptr_;
     BorNode *m_cur_;
