@@ -18,14 +18,14 @@ BorNode::~BorNode() {
     delete [] symbol_ptr_;
 }
 
-Bor::Bor(): kBorSize(USHRT_MAX) {
+Bor::Bor(): kBorSize(USHRT_MAX - 1) {
     size_ = 0;
     root_ = new BorNode(nullptr, 0);
     cur_ = root_;
     last_added_ = nullptr;
     clear_buckets_ = new std::list<BorNode*>[kBorSize + 2];
 
-    is_used_id_ = new bool[kBorSize];
+    is_used_id_ = new bool[kBorSize + 2];
     for (size_t i = 0; i < kBorSize + 2; i++)
         is_used_id_[i] = false;
     is_used_id_[0] = true;

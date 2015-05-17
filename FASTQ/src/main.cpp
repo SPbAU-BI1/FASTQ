@@ -25,10 +25,10 @@ int main(int argc, char **argv) {
         printf(ANSI_COLOR_RESET);
         exit(1);
     }
-    FASTQArchiver *archiver = new FASTQArchiver();
-    archiver->Compress(argv[1], argv[2]);
+    //FASTQArchiver *archiver = new FASTQArchiver();
+    //archiver->Compress(argv[1], argv[2]);
     //archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
-    /*
+
     Reader *compress_reader = new BufferedReader(argv[1]);
     Writer *compress_writer = new BufferedWriter(argv[2]);
 
@@ -46,5 +46,5 @@ int main(int argc, char **argv) {
 
     delete decompress_reader;
     delete decompress_writer;
-    */
+
 }
