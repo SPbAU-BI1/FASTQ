@@ -17,7 +17,6 @@ BitWriter::~BitWriter() {
 
 void BitWriter::Flush() {
     fwrite(out_buffer_, sizeof(char), (out_buff_l_ + 7) / 8, f_out_);
-    memset(out_buffer_, 0, kBuffSize);
     out_buff_l_ = 0;
 }
 
@@ -28,6 +27,11 @@ void BitWriter::PutBit(bool bit) {
 
     size_t index = out_buff_l_ / 8;
     size_t bit_num = out_buff_l_ % 8;
+
+    if (bit_num == 0) {
+        out_buffer_[index] = 0;
+    }
+
     out_buffer_[index] |= bit << bit_num;
     out_buff_l_++;
 }

@@ -3,6 +3,8 @@
 #include "../LZ78/LZ78Archiver.h"
 #include "../../InputOutput/Buffered/BufferedReader.h"
 #include "../../InputOutput/Buffered/BufferedWriter.h"
+#include "../../InputOutput/Bit/BitReader.h"
+#include "../../InputOutput/Bit/BitWriter.h"
 #include "../../InputOutput/StreamReader/StreamReader.h"
 #include "../../InputOutput/ArrayReaderWriter/ArrayReaderWriter.h"
 
@@ -56,7 +58,7 @@ void FASTQArchiver::Decompress(const char *input_file_name, const char *output_f
         buffers[i] = new ArrayReaderWriter();
     }
     Writer *writer = new BufferedWriter(output_file_name);
-    
+
     //decompresses a line from each uniform part and join it all together with help of cyclic array-buffer
     bool ended = 0;
     while (!ended) {

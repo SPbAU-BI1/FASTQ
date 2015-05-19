@@ -42,7 +42,6 @@ bool BufferedReader::GetShort(unsigned short *sh) {
 
 void BufferedReader::Read() {
     try {
-        memset(in_buffer_, 0, kBuffSize);
         readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);
         in_buff_l_ = 0;
     } catch(...) {

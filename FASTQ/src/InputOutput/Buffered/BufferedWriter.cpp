@@ -17,12 +17,11 @@ BufferedWriter::~BufferedWriter() {
 
 void BufferedWriter::Flush() {
     fwrite(out_buffer_, sizeof(char), out_buff_l_, f_out_);
-    memset(out_buffer_, 0, kBuffSize);
     out_buff_l_ = 0;
 }
 
 void BufferedWriter::PutChar(unsigned char ch) {
-    if (out_buff_l_ == kBuffSize * 8) {
+    if (out_buff_l_ == kBuffSize) {
         Flush();
     }
 
