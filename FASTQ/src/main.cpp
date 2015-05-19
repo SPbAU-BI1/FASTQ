@@ -3,10 +3,13 @@
 #include "Archiver/FASTQ/FASTQArchiver.h"
 #include "InputOutput/Buffered/BufferedReader.h"
 #include "InputOutput/Buffered/BufferedWriter.h"
+#include "InputOutput/Bit/BitReader.h"
+#include "InputOutput/Bit/BitWriter.h"
 #include "InputOutput/StreamReader/StreamReader.h"
 #include "Generator/Generator.h"
 
 #include <stdlib.h>
+#include <iostream>
 
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_RESET "\x1b[0m"
@@ -30,7 +33,9 @@ int main(int argc, char **argv) {
     archiver->Compress(argv[1], argv[2]);
     archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
     
-    /*
+/*
+    using std::cerr;
+    using std::endl;
     Reader *compress_reader = new BufferedReader(argv[1]);
     Writer *compress_writer = new BufferedWriter(argv[2]);
 
@@ -48,5 +53,5 @@ int main(int argc, char **argv) {
 
     delete decompress_reader;
     delete decompress_writer;
-    */
+*/
 }

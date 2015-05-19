@@ -1,19 +1,20 @@
-#ifndef _BUFFEREDREADER_H_
-#define _BUFFEREDREADER_H_
+#ifndef _BITREADER_H_
+#define _BITREADER_H_
 
 #include "../Interface/Reader.h"
 
 #include <stdio.h>
 #include <string.h>
 
-class BufferedReader: public Reader {
+class BitReader: public Reader {
 public:
-    BufferedReader(const char *input_file_name);
+    BitReader(const char *input_file_name);
 
+    bool GetBit(bool *b);
     bool GetChar(unsigned char *ch);
     bool GetShort(unsigned short *sh);
 
-    ~BufferedReader();
+    ~BitReader();
 
 private:
     inline void Read();
@@ -23,4 +24,4 @@ private:
     const size_t kBuffSize = 1000;
 };
 
-#endif // BUFFEREDREADER_H_
+#endif // BITREADER_H_

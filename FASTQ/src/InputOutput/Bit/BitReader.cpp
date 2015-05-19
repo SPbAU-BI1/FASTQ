@@ -1,6 +1,6 @@
-#include "BufferedReader.h"
+#include "BitReader.h"
 
-BufferedReader::BufferedReader(const char *input_file_name) {
+BitReader::BitReader(const char *input_file_name) {
     f_in_ = fopen(input_file_name, "rb");
 
     in_buffer_ = new char[kBuffSize];
@@ -9,13 +9,13 @@ BufferedReader::BufferedReader(const char *input_file_name) {
     in_buff_l_ = 0;
 }
 
-BufferedReader::~BufferedReader() {
+BitReader::~BitReader() {
     fclose(f_in_);
     delete in_buffer_;
 }
 
-bool BufferedReader::GetChar(unsigned char *ch) {
-    if (in_buff_l_ == readen_size_) {
+bool BitReader::GetBit(bool *b) {
+    if (in_buff_l_ == readen_size_ * 8) {
         try {
             Read();
         } catch(...) {
@@ -23,12 +23,27 @@ bool BufferedReader::GetChar(unsigned char *ch) {
         }
     }
 
-    *ch = in_buffer_[in_buff_l_++];
-    
+    size_t index = in_buff_l_ / 8;
+    size_t bit_num = in_buff_l_ % 8;
+    in_buff_l_++;
+
+    *b = (in_buffer_[index] & (1 << bit_num)) != 0;
     return true;
 }
 
-bool BufferedReader::GetShort(unsigned short *sh) {
+bool BitReader::GetChar(unsigned char *ch) {
+    *ch = 0;
+    bool b;
+
+    for (int i = 0; i < 8; i++) {
+        if (!GetBit(&b))
+            return false;
+        *ch |= b << i;
+    }
+    return true;
+}
+
+bool BitReader::GetShort(unsigned short *sh) {
     *sh = 0;
     unsigned char ch1, ch2;
 
@@ -40,7 +55,7 @@ bool BufferedReader::GetShort(unsigned short *sh) {
     return true;
 }
 
-void BufferedReader::Read() {
+void BitReader::Read() {
     try {
         memset(in_buffer_, 0, kBuffSize);
         readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);
@@ -53,4 +68,3 @@ void BufferedReader::Read() {
         throw "File has been already readen\n";
     }
 }
-
