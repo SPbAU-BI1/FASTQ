@@ -10,9 +10,14 @@ class BufferedWriter: public Writer {
 public:
     BufferedWriter(const char *output_file_name);
 
-    void PutChar(unsigned char ch);
-    void PutShort(unsigned short sh);
+    void PutChar(unsigned char val);
+    void PutShort(unsigned short val);
+    void PutInt(unsigned int val);
+    void PutLong(unsigned long long val);
     void Flush();
+    
+    void setOffset(fpos_t offset);
+    fpos_t getOffset();
 
     ~BufferedWriter();
 
@@ -20,7 +25,7 @@ private:
     FILE *f_out_;
     char *out_buffer_;
     size_t out_buff_l_;
-    const size_t kBuffSize = 1000;
+    const size_t kBuffSize = (1 << 16);
 };
 
 #endif // _BUFFEREDWRITER_H_

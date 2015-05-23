@@ -11,58 +11,52 @@
 #include <stdio.h>
 
 void FASTQArchiver::Compress(const char *input_file_name, const char *output_file_name) {
-    Writer *compress_writer = new BufferedWriter(output_file_name); 
-    for (int i = 0; i < block_size_; i++) {
-        //Next two chars signalize about beginning of new part
-        //It's bad solution
-        //TODO: something with fseek() and ftell() functions
+    BufferedWriter *compress_writer = new BufferedWriter(output_file_name); 
+    fpos_t begin[kBlockSize], end[kBlockSize];
+    compress_writer->setOffset(2 * kBlockSize * sizeof(fpos_t));
+
+    for (int i = 0; i < kBlockSize; i++) {
+        begin[i] = compress_writer->getOffset();
         Archiver *archiver = new LZ78Archiver();
-        compress_writer->PutShort((1 << 16) - 1);
-        Reader *compress_reader = new StreamReader(input_file_name, block_size_, i);
+        //compress_writer->PutShort((1 << 16) - 1);
+        Reader *compress_reader = new StreamReader(input_file_name, kBlockSize, i);
         archiver->Compress(compress_reader, compress_writer);
         compress_writer->Flush();
+        end[i] = compress_writer->getOffset();
         delete compress_reader; 
         delete archiver;
     }
-    //delete archiver;
+    compress_writer->setOffset(0);
+    for (int i = 0; i < kBlockSize; i++) {
+        compress_writer->PutLong(begin[i]);
+        compress_writer->PutLong(end[i]);
+    }
+    compress_writer->Flush();
     delete compress_writer;
 }
 
 void FASTQArchiver::Decompress(const char *input_file_name, const char *output_file_name) {
-    BufferedReader *readers[block_size_];
-    unsigned short last[block_size_];
-    for (int i = 0; i < block_size_; i++) {
-        readers[i] = new BufferedReader(input_file_name);  
-        last[i] = 0;
-    }
-
-    //splits into block_size_ parts of uniform data
-    int first_not_used = 0;
-    while (1) {
-        for (int i = first_not_used; i < block_size_; i++)
-            readers[i]->GetShort(&last[i]);
-        if (last[first_not_used] == ((1 << 16) - 1))
-        {
-            first_not_used++;
-            for (int i = first_not_used; i < block_size_; i++)
-                last[i] = 0;
-        }
-        if (first_not_used == block_size_)
-            break; 
-    }
-
-    Archiver *archivers[block_size_];
-    ArrayReaderWriter *buffers[block_size_];
-    for (int i = 0; i < block_size_; i++) {
+    BufferedReader *reader = new BufferedReader(input_file_name);    
+    BufferedReader *readers[kBlockSize];
+    Archiver *archivers[kBlockSize];
+    ArrayReaderWriter *buffers[kBlockSize];
+    
+    fpos_t begin, end;
+    for (int i = 0; i < kBlockSize; i++)
+    {
+        reader->GetLong((unsigned long long*) &begin);
+        reader->GetLong((unsigned long long*) &end);
+        readers[i] = new BufferedReader(input_file_name, begin, end);  
         archivers[i] = new LZ78Archiver();
         buffers[i] = new ArrayReaderWriter();
-    }
+    } 
+    delete reader;
     Writer *writer = new BufferedWriter(output_file_name);
 
     //decompresses a line from each uniform part and join it all together with help of cyclic array-buffer
     bool ended = 0;
     while (!ended) {
-        for (int i = 0; i < block_size_; i++) {
+        for (int i = 0; i < kBlockSize; i++) {
             while (!(buffers[i]->SearchLineFeed()))
                 if (!archivers[i]->PutNextDecompressedPart(readers[i], buffers[i])) {
                     ended = 1;
@@ -74,7 +68,7 @@ void FASTQArchiver::Decompress(const char *input_file_name, const char *output_f
     }
     
     writer->Flush();
-    for (int i = 0; i < block_size_; i++) {
+    for (int i = 0; i < kBlockSize; i++) {
         delete readers[i];
         delete archivers[i];
         delete buffers[i];

@@ -13,7 +13,7 @@ public:
     void Compress(const char *input_file_name, const char *output_file_name);
     void Decompress(const char *input_file_name, const char *output_file_name);
 private:
-    static const int block_size_ = 4; //number of uniform parts of data
+    static const int kBlockSize = 4; //number of uniform parts of data
 };
 
 #endif //_FASTQARCHIVER_H_

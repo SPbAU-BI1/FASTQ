@@ -20,15 +20,39 @@ void BufferedWriter::Flush() {
     out_buff_l_ = 0;
 }
 
-void BufferedWriter::PutChar(unsigned char ch) {
+void BufferedWriter::PutChar(unsigned char val) {
     if (out_buff_l_ == kBuffSize) {
         Flush();
     }
 
-    out_buffer_[out_buff_l_++] = ch;
+    out_buffer_[out_buff_l_++] = val;
 }
 
-void BufferedWriter::PutShort(unsigned short sh) {
-    PutChar(sh & ((1 << 8) - 1));
-    PutChar(sh / (1 << 8));
+void BufferedWriter::PutShort(unsigned short val) {
+    PutChar(val & ((1 << 8) - 1));
+    PutChar(val >> 8);
+}
+
+void BufferedWriter::PutInt(unsigned int val) {
+    PutShort(val & ((1 << 16) - 1));
+    PutShort(val >> 16);
+}
+
+void BufferedWriter::PutLong(unsigned long long val) {
+    PutInt(val & ((1ll << 32) - 1));
+    PutInt(val >> 32);
+}
+
+void BufferedWriter::setOffset(fpos_t offset)
+{
+    Flush();
+    fsetpos(f_out_, &offset);
+}
+
+fpos_t BufferedWriter::getOffset()
+{
+    Flush();
+    fpos_t offset = 0;
+    fgetpos(f_out_, &offset);
+    return offset;
 }

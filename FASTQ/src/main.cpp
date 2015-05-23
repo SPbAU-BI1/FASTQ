@@ -9,6 +9,7 @@
 #include "Generator/Generator.h"
 
 #include <stdlib.h>
+#include <time.h>
 #include <iostream>
 
 #define ANSI_COLOR_RED "\x1b[31m"
@@ -29,9 +30,14 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    double time1 = clock() * 1.0 / CLOCKS_PER_SEC;
+
     FASTQArchiver *archiver = new FASTQArchiver();
     archiver->Compress(argv[1], argv[2]);
     archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
+
+    double time2 = clock() * 1.0 / CLOCKS_PER_SEC;
+    //fprintf(stderr, "%.6f\n", time2 - time1);
     
 /*
     using std::cerr;
