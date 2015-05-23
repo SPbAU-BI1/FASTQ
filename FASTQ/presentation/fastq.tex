@@ -10,6 +10,10 @@
 \usepackage{enumerate}
 \usepackage{color}
 \usepackage{picture}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usetikzlibrary{positioning,shadows,arrows}
 
 \usepackage{bold-extra}
 
@@ -22,6 +26,20 @@
 
 \let\Tiny=\tiny
 \useoutertheme{infolines}
+
+\tikzset {
+    fact/.style={rectangle, draw=none, rounded corners=1mm, fill=blue, drop shadow,
+        text centered, anchor=north, text=white},
+    new/.style={circle, draw=none, fill=orange, circular drop shadow,
+        text centered, anchor=north, text=white},
+    state/.style={circle, draw=none, fill=red, circular drop shadow,
+        text centered, anchor=north, text=white},
+    leaf/.style={rectangle, draw=black,
+    minimum width=0.5em, minimum height=0.5em},
+    cur/.style={circle, draw=none, fill=green, circular drop shadow,
+        text centered, anchor=north, text=black},
+    level distance=1.0cm, anchor=south
+}
 
 \begin{document}
 
@@ -88,19 +106,459 @@
 
 \end{frame}
 
-\begin{frame}{Алгоритм LZW}
+\begin{frame}[fragile]{Алгоритм LZW}
+s = \textcolor{orange}{a}bacaba
+\begin{center}
 
-    \begin{itemize}
-    
-        \item <1-> Тип: словарный
+\begin{tikzpicture}[]
+\node [cur] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$}	
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
 
-        \item <2-> Для быстрого поиска ранее встреченных подстрок используется бор
+\begin{block}{вывод}
+\end{block}
 
-        \item <3-> Здесь будет картинка с бором для простой строчки
-
-    \end{itemize}
-
+\end{center}
 \end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = \textcolor{green}{a}\textcolor{orange}{b}acaba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [cur] {$1$}	
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = \textcolor{blue}{ab}acaba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [new] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+\textcolor{red}{1}
+\end{block}
+
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = a\textcolor{green}{b}\textcolor{orange}{a}caba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [cur] {$2$}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = a\textcolor{blue}{ba}caba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [new] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 \textcolor{red}{2}
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = ab\textcolor{green}{a}\textcolor{orange}{c}aba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [cur] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = ab\textcolor{blue}{ac}aba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		child{node [new] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 \textcolor{red}{1}
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = aba\textcolor{green}{c}\textcolor{orange}{a}ba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [cur] {$3$}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = aba\textcolor{blue}{ca}ba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		child{node [new] {$7$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1 \textcolor{red}{3}
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = abac\textcolor{green}{a}\textcolor{orange}{b}a
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [cur] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		child{node [state] {$7$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1 3
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = abac\textcolor{green}{ab}\textcolor{orange}{a}
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [cur] {$4$}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		child{node [state] {$7$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1 3
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = abac\textcolor{blue}{aba}
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			child{node [new] {$8$}
+				edge from parent node[left] {$a$}
+			}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		child{node [state] {$7$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1 3 \textcolor{red}{4}
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = abacab\textcolor{green}{a}
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [cur] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			child{node [state] {$8$}
+				edge from parent node[left] {$a$}
+			}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		child{node [state] {$7$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1 3 4
+\end{block}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Алгоритм LZW}
+s = abacaba
+\begin{center}
+\begin{tikzpicture}[]
+\node [state] {$Root$} [->] [sibling distance=3cm]
+	child {node [state] {$1$} [sibling distance=1cm]
+		child{node [state] {$4$}
+			child{node [state] {$8$}
+				edge from parent node[left] {$a$}
+			}
+			edge from parent node[left] {$b$}
+		}
+		child{node [state] {$6$}
+			edge from parent node[left] {$c$}
+		}
+		edge from parent node[left] {$a$}
+    }
+    child {node [state] {$2$}
+		child{node [state] {$5$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$b$}
+    }
+    child {node [state] {$3$}
+		child{node [state] {$7$}
+			edge from parent node[left] {$a$}
+		}
+		edge from parent node[left] {$c$}
+    }
+;
+\end{tikzpicture}
+
+\begin{block}{вывод}
+1 2 1 3 4 \textcolor{red}{1}
+\end{block}
+
+\end{center}
+\end{frame}
+
 
 \begin{frame}{Алгоритм LZW}
 
