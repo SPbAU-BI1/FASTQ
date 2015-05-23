@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-BufferedReader::BufferedReader(const char *input_file_name, fpos_t begin_offset, fpos_t end_offset): begin_offset_(begin_offset), 
+BufferedReader::BufferedReader(const char *input_file_name, long long begin_offset, long long end_offset): begin_offset_(begin_offset), 
                                                                                                      end_offset_(end_offset) {
     f_in_ = fopen(input_file_name, "rb");
     
@@ -10,19 +10,13 @@ BufferedReader::BufferedReader(const char *input_file_name, fpos_t begin_offset,
     file_name_ = new char[strlen(input_file_name) + 1]();
     strcpy(file_name_, input_file_name);
 
-    if (begin_offset == std::numeric_limits<fpos_t>::min())
-    {
-        fseek(f_in_, 0, SEEK_SET);
-        fgetpos(f_in_, &begin_offset_);
-    }
-
-    if (end_offset == std::numeric_limits<fpos_t>::max())
+    if (end_offset == std::numeric_limits<long long>::max())
     {
         fseek(f_in_, 0, SEEK_END);
-        fgetpos(f_in_, &end_offset_);
+        end_offset_ = ftell(f_in_);
     }
     
-    fsetpos(f_in_, &begin_offset_);
+    fseek(f_in_, begin_offset_, SEEK_SET);
     readen_size_ = 0;
     in_buff_l_ = 0;
 }
@@ -30,9 +24,7 @@ BufferedReader::BufferedReader(const char *input_file_name, fpos_t begin_offset,
 BufferedReader::BufferedReader(const BufferedReader &reader)
 {
     BufferedReader(reader.file_name_, reader.begin_offset_, reader.end_offset_);
-    fpos_t offset = 0;
-    fgetpos(reader.f_in_, &offset);
-    fsetpos(f_in_, &offset); 
+    fseek(f_in_, ftell(reader.f_in_), SEEK_SET); 
 }
 
 BufferedReader::~BufferedReader() {
@@ -93,10 +85,8 @@ bool BufferedReader::GetLong(unsigned long long *val) {
 
 void BufferedReader::Read() {
     try {
-        fpos_t cur_offset = 0;
-        fgetpos(f_in_, &cur_offset);
-        fpos_t remaining_offset = end_offset_ - cur_offset;
-        readen_size_ = fread(in_buffer_, sizeof(char), std::min((fpos_t)kBuffSize, remaining_offset), f_in_);
+        long long remaining_offset = end_offset_ - ftell(f_in_);
+        readen_size_ = fread(in_buffer_, sizeof(char), std::min((long long) kBuffSize, remaining_offset), f_in_);
         in_buff_l_ = 0;
     } catch(...) {
         throw "Can't read file\n";

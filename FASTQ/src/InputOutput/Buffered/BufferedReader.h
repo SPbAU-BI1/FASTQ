@@ -9,7 +9,7 @@
 
 class BufferedReader: public Reader {
 public:
-    BufferedReader(const char *input_file_name, fpos_t begin_offset = std::numeric_limits<fpos_t>::min(), fpos_t end_offset = std::numeric_limits<fpos_t>::max());
+    BufferedReader(const char *input_file_name, long long begin_offset = 0, long long end_offset = std::numeric_limits<long long>::max());
     BufferedReader(const BufferedReader &reader);
     bool GetChar(unsigned char *val);
     bool GetShort(unsigned short *val);
@@ -21,7 +21,7 @@ public:
 private:
     inline void Read();
     char *file_name_;
-    fpos_t begin_offset_, end_offset_;
+    long long begin_offset_, end_offset_;
     FILE *f_in_;
     char *in_buffer_;
     size_t in_buff_l_, readen_size_;

@@ -43,16 +43,14 @@ void BufferedWriter::PutLong(unsigned long long val) {
     PutInt(val >> 32);
 }
 
-void BufferedWriter::setOffset(fpos_t offset)
+void BufferedWriter::setOffset(long long offset)
 {
     Flush();
-    fsetpos(f_out_, &offset);
+    fseek(f_out_, offset, SEEK_SET);
 }
 
-fpos_t BufferedWriter::getOffset()
+long long BufferedWriter::getOffset()
 {
     Flush();
-    fpos_t offset = 0;
-    fgetpos(f_out_, &offset);
-    return offset;
+    return ftell(f_out_);
 }

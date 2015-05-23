@@ -16,8 +16,8 @@ public:
     void PutLong(unsigned long long val);
     void Flush();
     
-    void setOffset(fpos_t offset);
-    fpos_t getOffset();
+    void setOffset(long long offset);
+    long long getOffset();
 
     ~BufferedWriter();
 
