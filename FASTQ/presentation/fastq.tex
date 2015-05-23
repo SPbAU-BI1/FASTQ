@@ -1,0 +1,246 @@
+\documentclass[12pt]{beamer}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{datetime}
+\usepackage{cmap}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{picture}
+
+\usepackage{bold-extra}
+
+\def\EPS{\varepsilon}
+\def\SO{\Rightarrow}
+\def\EQ{\Leftrightarrow}
+\def\t{\texttt}
+
+\usetheme{Warsaw}
+
+\let\Tiny=\tiny
+\useoutertheme{infolines}
+
+\begin{document}
+
+\title{Архивация FASTQ файлов}
+
+\author[]{
+    Подгузов Никита Владимирович \\
+    Кравченко Дмитрий Сергеевич \\
+    Бойкий Дмитрий Игоревич \\ 
+    \vspace{\baselineskip}
+    \footnotesize Куратор: Пржибельский Андрей 
+}
+\institute[]{Санкт-Петербургский Академический университет}
+\date{25 мая 2015 года}
+
+\frame{\titlepage}
+
+\begin{frame}{Постановка задачи}
+
+    \begin{itemize}
+
+        \item <1-> Задача: максимально сжать входной FASTQ-файл.
+        
+        \item <2-> Входной файл: биологические данные, набор <<k-меров>> --- маленьких фрагментов до 150 символов, кусочков генома. 
+
+        \item <3-> При считывании биологами возможны ошибки.
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Формат файла}
+
+    \begin{itemize}
+
+        \item <1-> Состоит из блоков данных
+
+        \begin{block}{Блок данных}
+    
+            @EAS54{\_}6{\_}R1{\_}2{\_}1{\_}540{\_}792\\
+            TTGGCAGGCCAAGGCCGATGGATCA\\
+            + \\
+            ;;;;;;;;;;;7;;;;;-;;;3;83 
+
+        \end{block}
+    
+        \item <2-> Большой размер входного файла (10 Mb -- 100 Gb)
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Пути решения}
+
+    Два типа алгоритмов сжатия:
+    
+    \begin{enumerate}
+
+        \item <1-> Словарный метод
+        
+        \item <2-> Метод энтропийного сжатия
+
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Алгоритм LZW}
+
+    \begin{itemize}
+    
+        \item <1-> Тип: словарный
+
+        \item <2-> Для быстрого поиска ранее встреченных подстрок используется бор
+
+        \item <3-> Здесь будет картинка с бором для простой строчки
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Алгоритм LZW}
+
+    Проблема: из-за большого объема данных надо чистить бор \\
+
+    Способы:
+
+    \begin{enumerate}
+
+        \item <1-> Оставить бор неизменяемым, как только заполнится первый раз
+
+        \item <2-> Полное очищение бора при его заполнении
+
+        \item <3-> std::set, в котором хранятся встречаемости вершин.
+        
+        \item <4-> Очищение какой-то части бора (например, $50\%$) при его
+        заполнении
+
+        \item <5-> Каждое константное количество шагов очищать бор на 
+        константное количество вершин
+
+    \end{enumerate}
+    
+\end{frame}
+
+
+\begin{frame}{Алгоритм Хаффмана}
+
+    \begin{itemize}
+
+        \item Тип: частотный
+        
+        \item Алгоритм
+        
+        \begin{itemize}
+
+            \item <1-> Подсчёт встречаемости каждого символа
+
+            \item <2-> Построение дерева
+
+            \item <3-> Сопоставление символов и кодов
+
+        \end{itemize}
+
+        \item Здесь будет картинка с деревом Хаффмана для простой строчки  
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Оптимизации}
+
+    \begin{itemize}
+
+        \item <1-> Разделение файла на 4 части
+
+        \item <2-> Применение разных алгоритмов к разным частям 
+
+        \item <3-> Удаление ненужных веток в боре (алгоритм LZW)
+
+        \item <4-> ??? (кодирование разностей между Quality, что-то еще?)
+    
+    \end{itemize} 
+
+\end{frame}
+
+\begin{frame}{Технические подробности}
+
+    \begin{itemize}
+    
+        \item <1-> Проект написан на C++ (Google C++ Style Guide)
+
+        \item <2-> Для удобства работы в команде использовался git
+
+        \item <3-> Тестирование
+
+        \begin{itemize}
+
+            \item Unit-тесты (или нет) 
+
+            \item Тестирование на реальных данных (см. результаты ниже)
+        
+        \end{itemize}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Технические подробности}
+
+    \begin{itemize}
+
+        \item Класс-интерфейс \texttt{Archiver}, содержащий два метода:
+        
+        \begin{itemize}
+
+            \item \textit{Compress(Reader*, Writer*)}
+
+            \item \textit{Decompress(Reader*, Writer*)}
+
+        \end{itemize}
+
+        \item Классы-интерфейсы \texttt{Reader} и \texttt{Writer}, осуществляющие чтение и запись различных типов данных соответственно.  
+
+        \item Такая реализация позволяет просто реализовывать и интегрировать в программу различные алгоритмы сжатия и эвристики.
+    
+    \end{itemize} 
+
+\end{frame}
+
+\begin{frame}{Проблемы, с которыми столкнулись}
+
+    \begin{itemize}
+    
+        \item Большой размер исходного файла (<<дорогие>> операции чтения и записи на диск)
+        
+        \item ???
+
+    \end{itemize}
+    
+     
+
+\end{frame}
+
+\begin{frame}{Результаты}
+    
+    Здесь будет табличка со сравнением коэффициентов сжатия и времени работы различных общеиспользуемых архиваторов и нашего (будем надеться, что наш всех сделает).
+
+\end{frame}
+
+\begin{frame}{Ссылки}
+
+    https://github.com/SPbAU-BI1/FASTQ
+
+\end{frame}
+
+\begin{frame}{}
+
+    Вопросы?
+
+\end{frame}
+
+\end{document}

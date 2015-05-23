@@ -10,7 +10,7 @@ BufferedReader::BufferedReader(const char *input_file_name, fpos_t begin_offset,
     file_name_ = new char[strlen(input_file_name) + 1]();
     strcpy(file_name_, input_file_name);
 
-    if (end_offset == -1)
+    if (end_offset == std::numeric_limits<fpos_t>::max())
     {
         fseek(f_in_, 0, SEEK_END);
         fgetpos(f_in_, &end_offset_);

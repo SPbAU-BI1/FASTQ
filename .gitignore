@@ -1,4 +1,13 @@
 *.exe
 *.o
+*.aux
+*.log
+*.nav
+*.out
+*.pdf
+*.snm
+*.toc
 test_io/
 debug/
+bin/
+obj/
