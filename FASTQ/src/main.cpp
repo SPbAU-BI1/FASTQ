@@ -1,5 +1,5 @@
 #include "Archiver/LZ77/LZ77Archiver.h"
-#include "Archiver/LZ78/LZ78Archiver.h"
+#include "Archiver/LZW/LZWArchiver.h"
 #include "Archiver/FASTQ/FASTQArchiver.h"
 #include "InputOutput/Buffered/BufferedReader.h"
 #include "InputOutput/Buffered/BufferedWriter.h"
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
 
     double time2 = clock() * 1.0 / CLOCKS_PER_SEC;
-    //fprintf(stderr, "%.6f\n", time2 - time1);
+    fprintf(stderr, "%.6f\n", time2 - time1);
     
 /*
     using std::cerr;

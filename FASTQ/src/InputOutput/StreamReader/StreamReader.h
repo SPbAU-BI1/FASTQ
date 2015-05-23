@@ -11,8 +11,8 @@ class StreamReader: public Reader {
 public:
     StreamReader(const char *input_file_name, int block_size, int row_number);
     
-    bool GetChar(unsigned char *ch);
-    bool GetShort(unsigned short *sh);
+    bool GetChar(unsigned char *ch) final;
+    bool GetShort(unsigned short *sh) final;
 
     ~StreamReader();
 private:
@@ -24,5 +24,7 @@ private:
     int cur_length_;
     char *buffer_;
 };
+
+#include "StreamReader_inline.h"
 
 #endif //_STREAMREADER_H_

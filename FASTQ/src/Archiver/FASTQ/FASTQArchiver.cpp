@@ -1,6 +1,6 @@
 #include "FASTQArchiver.h"
                     
-#include "../LZ78/LZ78Archiver.h"
+#include "../LZW/LZWArchiver.h"
 #include "../../InputOutput/Buffered/BufferedReader.h"
 #include "../../InputOutput/Buffered/BufferedWriter.h"
 #include "../../InputOutput/Bit/BitReader.h"
@@ -18,9 +18,9 @@ void FASTQArchiver::Compress(const char *input_file_name, const char *output_fil
 
     for (int i = 0; i < kBlockSize; i++) {
         begin[i] = compress_writer->getOffset();
-        Archiver *archiver = new LZ78Archiver();
+        Archiver *archiver = new LZWArchiver();
         //compress_writer->PutShort((1 << 16) - 1);
-        Reader *compress_reader = new StreamReader(input_file_name, kBlockSize, i);
+        StreamReader *compress_reader = new StreamReader(input_file_name, kBlockSize, i);
         archiver->Compress(compress_reader, compress_writer);
         compress_writer->Flush();
         end[i] = compress_writer->getOffset();
@@ -48,11 +48,11 @@ void FASTQArchiver::Decompress(const char *input_file_name, const char *output_f
         reader->GetLong(&begin);
         reader->GetLong(&end);
         readers[i] = new BufferedReader(input_file_name, begin, end);  
-        archivers[i] = new LZ78Archiver();
+        archivers[i] = new LZWArchiver();
         buffers[i] = new ArrayReaderWriter();
     } 
     delete reader;
-    Writer *writer = new BufferedWriter(output_file_name);
+    BufferedWriter *writer = new BufferedWriter(output_file_name);
 
     //decompresses a line from each uniform part and join it all together with help of cyclic array-buffer
     bool ended = 0;

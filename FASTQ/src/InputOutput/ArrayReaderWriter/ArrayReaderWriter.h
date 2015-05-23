@@ -9,11 +9,11 @@
 class ArrayReaderWriter: public Reader, public Writer {
 public:
     ArrayReaderWriter();
-    bool GetChar(unsigned char *ch);
-    bool GetShort(unsigned short *sh);
-    void PutChar(unsigned char ch);
-    void PutShort(unsigned short sh);
-    void Flush();
+    bool GetChar(unsigned char *ch) final;
+    bool GetShort(unsigned short *sh) final;
+    void PutChar(unsigned char ch) final;
+    void PutShort(unsigned short sh) final;
+    void Flush() final;
     
     bool SearchLineFeed(); //Returns true, if there is a symbol '\n' in current buffer
     void PutNextLine(Writer *writer); //Prints symbols till '\n' symbol
@@ -27,5 +27,7 @@ private:
     int read_position_;
     int write_position_;
 };
+
+#include "ArrayReaderWriter_inline.h"
 
 #endif //_ARRAYREADERWRITER_H_

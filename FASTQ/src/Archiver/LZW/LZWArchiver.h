@@ -1,31 +1,31 @@
-#ifndef _LZ78ARCHIVER_H_
-#define _LZ78ARCHIVER_H_
+#ifndef _LZWARCHIVER_H_
+#define _LZWARCHIVER_H_
 
 #include "../Interface/Archiver.h"
 
 #include <utility>
 
-#include "Bor.h"
+#include "Trie.h"
 
 class Reader;
 class Writer;
 
-class LZ78Archiver : public Archiver {
+class LZWArchiver : public Archiver {
 private:
-    char PrintSubString(Writer *writer, Bor *bor, char *s, BorNode *cur);
+    char PrintSubString(Writer *writer, Trie *trie, char *s, TrieNode *cur);
 public:
-    LZ78Archiver();
+    LZWArchiver();
     bool PutNextCompressedPart(Reader *reader, Writer *writer);
     void Compress(Reader *reader, Writer *writer);
     bool PutNextDecompressedPart(Reader *reader, Writer *writer);
     void Decompress(Reader *reader, Writer *writer);
-    ~LZ78Archiver();
+    ~LZWArchiver();
 private: //some variables which we need during decompress
-    Bor *m_comp_bor_;
-    Bor *m_bor_;
-    BorNode **m_nodes_ptr_;
-    BorNode *m_cur_;
-    BorNode *m_last_node_from_input_;
+    Trie *m_comp_trie_;
+    Trie *m_trie_;
+    TrieNode **m_nodes_ptr_;
+    TrieNode *m_cur_;
+    TrieNode *m_last_node_from_input_;
     char *m_s_;
     char m_last_char_;
     unsigned char m_ch_;
@@ -35,4 +35,4 @@ private: //some variables which we need during decompress
     bool m_printed_;
 };
 
-#endif // _LZ78ARCHIVER_H_
+#endif // _LZWARCHIVER_H_
