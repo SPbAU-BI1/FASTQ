@@ -1,7 +1,15 @@
 #include "BitReader.h"
 
+#include <string>
+
 BitReader::BitReader(const char *input_file_name) {
     f_in_ = fopen(input_file_name, "rb");
+
+    if (f_in_ == NULL) {
+        std::string name(input_file_name);
+        std::string s = "Could not open file named '" + name + "'";
+        throw s;
+    }
 
     in_buffer_ = new char[kBuffSize];
 
@@ -16,7 +24,7 @@ BitReader::BitReader(const BitReader &bitReader) {
 	BitReader(bitReader.file_name_);
 	readen_size_ = bitReader.readen_size_;
 	in_buff_l_ = bitReader.in_buff_l_;
-	for (int i = 0; i < kBuffSize; i++)
+	for (size_t i = 0; i < kBuffSize; i++)
 		in_buffer_[i] = bitReader.in_buffer_[i];
 }
 
@@ -32,9 +40,8 @@ BitReader::~BitReader() {
 
 bool BitReader::GetBit(bool *b) {
     if (in_buff_l_ == readen_size_ * 8) {
-        try {
-            Read();
-        } catch(...) {
+        Read();
+        if (readen_size_ == 0) {
             return false;
         }
     }
@@ -72,14 +79,10 @@ bool BitReader::GetShort(unsigned short *sh) {
 }
 
 void BitReader::Read() {
-    try {
-        readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);
-        in_buff_l_ = 0;
-    } catch(...) {
-        throw "Can't read file\n";
-    }
+    readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);
+    in_buff_l_ = 0;
 
-    if (readen_size_ == 0) {
-        throw "File has been already readen\n";
+    if (ferror(f_in_)) {
+        throw std::string("Could not read input file");
     }
 }

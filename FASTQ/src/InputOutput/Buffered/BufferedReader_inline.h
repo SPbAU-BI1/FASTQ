@@ -1,8 +1,7 @@
 inline bool BufferedReader::GetChar(unsigned char *val) {
     if (in_buff_l_ == readen_size_) {
-        try {
-            Read();
-        } catch(...) {
+        Read();
+        if (readen_size_ == 0) {
             return false;
         }
     }
@@ -49,16 +48,11 @@ inline bool BufferedReader::GetLong(unsigned long long *val) {
 }
 
 inline void BufferedReader::Read() {
-    try {
-        long long remaining_offset = end_offset_ - ftell(f_in_);
-        readen_size_ = fread(in_buffer_, sizeof(char), std::min((long long) kBuffSize, remaining_offset), f_in_);
-        in_buff_l_ = 0;
-    } catch(...) {
-        throw "Can't read file\n";
-    }
-
-    if (readen_size_ == 0) {
-        throw "File has been already readen\n";
+    long long remaining_offset = end_offset_ - ftell(f_in_);
+    readen_size_ = fread(in_buffer_, sizeof(char), std::min((long long) kBuffSize, remaining_offset), f_in_);
+    in_buff_l_ = 0;
+    
+    if (ferror(f_in_)) {
+        throw std::string("Could not read input file");
     }
 }
-

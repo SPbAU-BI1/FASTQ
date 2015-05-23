@@ -1,9 +1,17 @@
 #include "BufferedReader.h"
 
+#include <string>
+
 BufferedReader::BufferedReader(const char *input_file_name, long long begin_offset, long long end_offset): begin_offset_(begin_offset), 
                                                                                                      end_offset_(end_offset) {
     f_in_ = fopen(input_file_name, "rb");
-    
+
+    if (f_in_ == NULL) {
+        std::string name(input_file_name);
+        std::string s = "Could not open file named '" + name + "'";
+        throw s;
+    }
+
     in_buffer_ = new char[kBuffSize];
     file_name_ = new char[strlen(input_file_name) + 1]();
     strcpy(file_name_, input_file_name);
@@ -12,7 +20,7 @@ BufferedReader::BufferedReader(const char *input_file_name, long long begin_offs
         fseek(f_in_, 0, SEEK_END);
         end_offset_ = ftell(f_in_);
     }
-    
+
     fseek(f_in_, begin_offset_, SEEK_SET);
     readen_size_ = 0;
     in_buff_l_ = 0;

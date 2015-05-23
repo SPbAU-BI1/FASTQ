@@ -1,8 +1,16 @@
 #include "BitWriter.h"
 
+#include <string>
+
 BitWriter::BitWriter(const char *output_file_name) {
     f_out_ = fopen(output_file_name, "wb");
-    
+
+    if (f_out_ == NULL) {
+        std::string name(output_file_name);
+        std::string s = "Could not open file named '" + name + "'";
+        throw s;
+    }
+
     out_buffer_ = new char[kBuffSize];
     memset(out_buffer_, 0, kBuffSize);
 
@@ -18,6 +26,10 @@ BitWriter::~BitWriter() {
 void BitWriter::Flush() {
     fwrite(out_buffer_, sizeof(char), (out_buff_l_ + 7) / 8, f_out_);
     out_buff_l_ = 0;
+
+    if (ferror(f_out_)) {
+        throw std::string("Could not writer to output file");
+    }
 }
 
 void BitWriter::PutBit(bool bit) {
