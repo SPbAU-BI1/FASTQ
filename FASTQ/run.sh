@@ -8,7 +8,7 @@ fi
 RED='\033[0;31m'
 NC='\033[0m'
 
-#input="test_io/test_in.txt" # little one
+#input="test_io/test_in.txt" # 6M
 input="test_io/s_6_first100000_1.fastq" # 64M
 #input="test_io/s_6.first400000_2.fastq" # 273M
 output="test_io/my.out"
