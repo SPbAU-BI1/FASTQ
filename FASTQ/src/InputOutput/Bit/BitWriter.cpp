@@ -12,7 +12,7 @@ BitWriter::BitWriter(const char *output_file_name) {
 BitWriter::~BitWriter() {
     Flush();
     fclose(f_out_);
-    delete out_buffer_;
+    delete [] out_buffer_;
 }
 
 void BitWriter::Flush() {

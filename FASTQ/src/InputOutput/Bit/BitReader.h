@@ -9,6 +9,8 @@
 class BitReader: public Reader {
 public:
     BitReader(const char *input_file_name);
+	BitReader(const BitReader &reader);
+	Reader* Clone();
 
     bool GetBit(bool *b);
     bool GetChar(unsigned char *ch);
@@ -19,6 +21,7 @@ public:
 private:
     inline void Read();
     FILE *f_in_;
+    char *file_name_;
     char *in_buffer_;
     size_t in_buff_l_, readen_size_;
     const size_t kBuffSize = 1000;

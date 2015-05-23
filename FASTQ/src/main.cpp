@@ -30,14 +30,17 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    double time1 = clock() * 1.0 / CLOCKS_PER_SEC;
+    //double time1 = clock() * 1.0 / CLOCKS_PER_SEC;
 
     FASTQArchiver *archiver = new FASTQArchiver();
     archiver->Compress(argv[1], argv[2]);
+    
+    //double time2 = clock() * 1.0 / CLOCKS_PER_SEC;
+    //fprintf(stderr, "%.6f\n", time2 - time1);
     archiver->Decompress(argv[2], concatenate(argv[1], "_decompressed"));
 
-    double time2 = clock() * 1.0 / CLOCKS_PER_SEC;
-    fprintf(stderr, "%.6f\n", time2 - time1);
+    //double time3 = clock() * 1.0 / CLOCKS_PER_SEC;
+    //fprintf(stderr, "%.6f\n", time3 - time1);
     
 /*
     using std::cerr;

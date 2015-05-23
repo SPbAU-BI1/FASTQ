@@ -5,13 +5,29 @@ BitReader::BitReader(const char *input_file_name) {
 
     in_buffer_ = new char[kBuffSize];
 
+    file_name_ = new char[strlen(input_file_name) + 1]();
+    strcpy(file_name_, input_file_name);
+
     readen_size_ = 0;
     in_buff_l_ = 0;
 }
 
+BitReader::BitReader(const BitReader &bitReader) {
+	BitReader(bitReader.file_name_);
+	readen_size_ = bitReader.readen_size_;
+	in_buff_l_ = bitReader.in_buff_l_;
+	for (int i = 0; i < kBuffSize; i++)
+		in_buffer_[i] = bitReader.in_buffer_[i];
+}
+
+Reader* BitReader::Clone() {
+	return new BitReader(*this);
+}
+
 BitReader::~BitReader() {
     fclose(f_in_);
-    delete in_buffer_;
+    delete [] in_buffer_;
+    delete [] file_name_;
 }
 
 bool BitReader::GetBit(bool *b) {

@@ -12,6 +12,6 @@ BufferedWriter::BufferedWriter(const char *output_file_name) {
 BufferedWriter::~BufferedWriter() {
     Flush();
     fclose(f_out_);
-    delete out_buffer_;
+    delete [] out_buffer_;
 }
 

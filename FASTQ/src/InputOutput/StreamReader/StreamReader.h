@@ -10,7 +10,9 @@
 class StreamReader: public Reader {
 public:
     StreamReader(const char *input_file_name, int block_size, int row_number);
-    
+    StreamReader(const StreamReader &reader);
+    Reader* Clone();
+
     bool GetChar(unsigned char *ch) final;
     bool GetShort(unsigned short *sh) final;
 
@@ -18,6 +20,7 @@ public:
 private:
     static const int kBufferSize = 1 << 16;
     FILE *f_in_;
+    char *file_name_;
     int block_size_;
     int row_number_;
     int cur_position_;

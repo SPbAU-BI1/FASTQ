@@ -26,14 +26,12 @@ inline void BufferedWriter::PutLong(unsigned long long val) {
     PutInt(val >> 32);
 }
 
-inline void BufferedWriter::setOffset(long long offset)
-{
+inline void BufferedWriter::setOffset(long long offset) {
     Flush();
     fseek(f_out_, offset, SEEK_SET);
 }
 
-inline long long BufferedWriter::getOffset()
-{
+inline long long BufferedWriter::getOffset() {
     Flush();
     return ftell(f_out_);
 }

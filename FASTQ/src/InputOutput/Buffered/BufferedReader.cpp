@@ -8,8 +8,7 @@ BufferedReader::BufferedReader(const char *input_file_name, long long begin_offs
     file_name_ = new char[strlen(input_file_name) + 1]();
     strcpy(file_name_, input_file_name);
 
-    if (end_offset == std::numeric_limits<long long>::max())
-    {
+    if (end_offset == std::numeric_limits<long long>::max()) {
         fseek(f_in_, 0, SEEK_END);
         end_offset_ = ftell(f_in_);
     }
@@ -19,14 +18,17 @@ BufferedReader::BufferedReader(const char *input_file_name, long long begin_offs
     in_buff_l_ = 0;
 }
 
-BufferedReader::BufferedReader(const BufferedReader &reader)
-{
+BufferedReader::BufferedReader(const BufferedReader &reader) {
     BufferedReader(reader.file_name_, reader.begin_offset_, reader.end_offset_);
     fseek(f_in_, ftell(reader.f_in_), SEEK_SET); 
 }
 
+Reader* BufferedReader::Clone() {
+	return new BufferedReader(*this);	
+}
+
 BufferedReader::~BufferedReader() {
     fclose(f_in_);
-    delete in_buffer_;
-    delete file_name_;
+    delete [] in_buffer_;
+    delete [] file_name_;
 }
