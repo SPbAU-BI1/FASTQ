@@ -32,7 +32,7 @@ void BitWriter::Flush() {
     }
 }
 
-void BitWriter::PutBit(bool bit) {
+void BitWriter::PutBit(bool val) {
     if (out_buff_l_ == kBuffSize * 8) {
         Flush();
     }
@@ -44,17 +44,17 @@ void BitWriter::PutBit(bool bit) {
         out_buffer_[index] = 0;
     }
 
-    out_buffer_[index] |= bit << bit_num;
+    out_buffer_[index] |= val << bit_num;
     out_buff_l_++;
 }
 
-void BitWriter::PutChar(unsigned char ch) {
+void BitWriter::PutChar(unsigned char val) {
     for (int i = 0; i < 8; i++) {
-        PutBit(ch & (1 << i));
+        PutBit(val & (1 << i));
     }
 }
 
-void BitWriter::PutShort(unsigned short sh) {
-    PutChar(sh & ((1 << 8) - 1));
-    PutChar(sh / (1 << 8));
+void BitWriter::PutShort(unsigned short val) {
+    PutChar(val & ((1 << 8) - 1));
+    PutChar(val / (1 << 8));
 }

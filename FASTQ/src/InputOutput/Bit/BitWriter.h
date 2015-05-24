@@ -10,9 +10,9 @@ class BitWriter: public Writer {
 public:
     BitWriter(const char *output_file_name);
 
-    void PutBit(bool bit);
-    void PutChar(unsigned char ch);
-    void PutShort(unsigned short sh);
+    void PutBit(bool val);
+    void PutChar(unsigned char val);
+    void PutShort(unsigned short val);
     void Flush();
 
     ~BitWriter();

@@ -3,34 +3,54 @@ inline void ArrayReaderWriter::CorrectPosition(int &position) {
         position -= kBufferSize;
 }
 
-inline bool ArrayReaderWriter::GetChar(unsigned char *ch) {
+inline bool ArrayReaderWriter::GetChar(unsigned char *val) {
     if (read_position_ == write_position_)
         return 0;
-    *ch = data_[read_position_++];
+    *val = data_[read_position_++];
     CorrectPosition(read_position_);
     return 1;
 }
 
-inline bool ArrayReaderWriter::GetShort(unsigned short *sh) {
+inline bool ArrayReaderWriter::GetShort(unsigned short *val) {
     if (read_position_ == write_position_)
         return 0;
-    *sh = data_[read_position_++];
+    *val = data_[read_position_++];
     CorrectPosition(read_position_);
     if (read_position_ == write_position_)
         return 0;
-    *sh += (1 << 8) * (unsigned short) data_[read_position_++];
+    *val += (1 << 8) * (unsigned short) data_[read_position_++];
     CorrectPosition(read_position_);
     return 1;
 }
 
-inline void ArrayReaderWriter::PutChar(unsigned char ch) {
-    data_[write_position_++] = ch;
+inline bool ArrayReaderWriter::GetInt(unsigned int *val) {
+    unsigned short val1, val2;
+    if (!GetShort(&val1))
+        return 0;
+    if (!GetShort(&val2))
+        return 0;
+    *val = val2 * (1 << 16) + val1;
+    return 1;
+}
+
+inline bool ArrayReaderWriter::GetLong(unsigned long long *val) {
+    unsigned int val1, val2;
+    if (!GetInt(&val1))
+        return 0;
+    if (!GetInt(&val2))
+        return 0;
+    *val = val2 * (1ll << 32) + val1;
+    return 1;
+}
+
+inline void ArrayReaderWriter::PutChar(unsigned char val) {
+    data_[write_position_++] = val;
     CorrectPosition(write_position_);
 }
 
-inline void ArrayReaderWriter::PutShort(unsigned short sh) {
-    data_[write_position_++] = sh & ((1 << 8) - 1);
+inline void ArrayReaderWriter::PutShort(unsigned short val) {
+    data_[write_position_++] = val & ((1 << 8) - 1);
     CorrectPosition(write_position_);
-    data_[write_position_++] = sh >> 8;
+    data_[write_position_++] = val >> 8;
     CorrectPosition(write_position_);
 }

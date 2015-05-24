@@ -13,8 +13,10 @@ public:
     StreamReader(const StreamReader &reader);
     StreamReader* Clone();
 
-    bool GetChar(unsigned char *ch) final;
-    bool GetShort(unsigned short *sh) final;
+    bool GetChar(unsigned char *val) final;
+    bool GetShort(unsigned short *val) final;
+    bool GetInt(unsigned int *val) final;
+    bool GetLong(unsigned long long *val) final;
 
     ~StreamReader();
 private:

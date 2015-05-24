@@ -15,6 +15,9 @@ public:
     bool GetBit(bool *b);
     bool GetChar(unsigned char *ch);
     bool GetShort(unsigned short *sh);
+    bool GetInt(unsigned int *sh);
+    bool GetLong(unsigned long long *sh);
+
 
     ~BitReader();
 

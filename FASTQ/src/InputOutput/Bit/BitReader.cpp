@@ -53,29 +53,54 @@ bool BitReader::GetBit(bool *b) {
     return true;
 }
 
-bool BitReader::GetChar(unsigned char *ch) {
-    *ch = 0;
-    bool b;
+bool BitReader::GetChar(unsigned char *val) {
+    *val = 0;
+    bool b = 0;
 
     for (int i = 0; i < 8; i++) {
         if (!GetBit(&b))
             return false;
-        *ch |= b << i;
+        *val |= b << i;
     }
     return true;
 }
 
-bool BitReader::GetShort(unsigned short *sh) {
-    *sh = 0;
-    unsigned char ch1, ch2;
+bool BitReader::GetShort(unsigned short *val) {
+    *val = 0;
+    unsigned char val1, val2;
 
-    if (!(GetChar(&ch1) & GetChar(&ch2))) {
+    if (!(GetChar(&val1) & GetChar(&val2))) {
         return false;
     }
 
-    *sh = (unsigned short)ch1 + (unsigned short)ch2 * (1 << 8);
+    *val = (unsigned short)val1 + (unsigned short)val2 * (1 << 8);
     return true;
 }
+
+bool BitReader::GetInt(unsigned int *val) {
+    *val = 0;
+    unsigned short val1, val2;
+
+    if (!(GetShort(&val1) & GetShort(&val2))) {
+        return false;
+    }
+
+    *val = (unsigned int)val1 + (unsigned int)val2 * (1 << 16);
+    return true;
+}
+
+bool BitReader::GetLong(unsigned long long *val) {
+    *val = 0;
+    unsigned int val1, val2;
+
+    if (!(GetInt(&val1) & GetInt(&val2))) {
+        return false;
+    }
+
+    *val = (unsigned long long)val1 + (unsigned long long)val2 * (1ll << 32);
+    return true;
+}
+
 
 void BitReader::Read() {
     readen_size_ = fread(in_buffer_, sizeof(char), kBuffSize, f_in_);

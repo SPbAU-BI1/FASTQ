@@ -1,6 +1,6 @@
 #include <string.h>
 
-inline bool StreamReader::GetChar(unsigned char *ch) {
+inline bool StreamReader::GetChar(unsigned char *val) {
     if (cur_position_ == cur_length_) {
         int read_row_count = block_size_;
         if (cur_length_ == -1)                      
@@ -12,16 +12,36 @@ inline bool StreamReader::GetChar(unsigned char *ch) {
         cur_position_ = 0;
         cur_length_ = strlen(buffer_);
     }
-    *ch = buffer_[cur_position_++];
+    *val = buffer_[cur_position_++];
     return 1;   
 }
 
-inline bool StreamReader::GetShort(unsigned short *sh) {
-    unsigned char ch1, ch2;
-    if (!GetChar(&ch1))
+inline bool StreamReader::GetShort(unsigned short *val) {
+    unsigned char val1, val2;
+    if (!GetChar(&val1))
         return 0;
-    if (!GetChar(&ch2))
+    if (!GetChar(&val2))
         return 0;
-    *sh = ch1 * (1 << 8) + ch2;
+    *val = val1 * (1 << 8) + val2;
+    return 1;
+}
+
+inline bool StreamReader::GetInt(unsigned int *val) {
+    unsigned short val1, val2;
+    if (!GetShort(&val1))
+        return 0;
+    if (!GetShort(&val2))
+        return 0;
+    *val = val1 * (1 << 16) + val2;
+    return 1;
+}
+
+inline bool StreamReader::GetLong(unsigned long long *val) {
+    unsigned int val1, val2;
+    if (!GetInt(&val1))
+        return 0;
+    if (!GetInt(&val2))
+        return 0;
+    *val = val1 * (1ll << 32) + val2;
     return 1;
 }
