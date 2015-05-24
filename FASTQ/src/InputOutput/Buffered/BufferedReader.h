@@ -13,6 +13,7 @@ public:
     BufferedReader(const char *input_file_name, long long begin_offset = 0, long long end_offset = std::numeric_limits<long long>::max());
     BufferedReader(const BufferedReader &reader);
     BufferedReader* Clone();
+    bool GetBit(bool *val) final;
     bool GetChar(unsigned char *val) final;
     bool GetShort(unsigned short *val) final;
     bool GetInt(unsigned int *val);

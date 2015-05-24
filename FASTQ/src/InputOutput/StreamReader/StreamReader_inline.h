@@ -1,5 +1,9 @@
 #include <string.h>
 
+inline bool StreamReader::GetBit(bool *val) {
+	return 0;
+}
+
 inline bool StreamReader::GetChar(unsigned char *val) {
     if (cur_position_ == cur_length_) {
         int read_row_count = block_size_;

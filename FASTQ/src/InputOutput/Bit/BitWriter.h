@@ -13,6 +13,8 @@ public:
     void PutBit(bool val);
     void PutChar(unsigned char val);
     void PutShort(unsigned short val);
+    void PutInt(unsigned int val);
+    void PutLong(unsigned long long val);
     void Flush();
 
     ~BitWriter();

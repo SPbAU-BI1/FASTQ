@@ -58,3 +58,13 @@ void BitWriter::PutShort(unsigned short val) {
     PutChar(val & ((1 << 8) - 1));
     PutChar(val / (1 << 8));
 }
+
+void BitWriter::PutInt(unsigned int val) {
+    PutShort(val & ((1 << 16) - 1));
+    PutShort(val / (1 << 16));
+}
+
+void BitWriter::PutLong(unsigned long long val) {
+    PutInt(val & ((1ll << 32) - 1));
+    PutInt(val / (1ll << 32));
+}

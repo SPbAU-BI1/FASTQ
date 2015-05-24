@@ -11,12 +11,16 @@ public:
     ArrayReaderWriter();
     ArrayReaderWriter(const ArrayReaderWriter &arrayReaderWriter);
     ArrayReaderWriter* Clone();
+    bool GetBit(bool *val) final;
     bool GetChar(unsigned char *val) final;
     bool GetShort(unsigned short *val) final;
     bool GetInt(unsigned int *val) final;
     bool GetLong(unsigned long long *val) final;
+    void PutBit(bool val) final;
     void PutChar(unsigned char val) final;
     void PutShort(unsigned short val) final;
+    void PutInt(unsigned int val) final;
+    void PutLong(unsigned long long val) final;
     void Flush() final;
     
     bool SearchLineFeed(); //Returns true, if there is a symbol '\n' in current buffer

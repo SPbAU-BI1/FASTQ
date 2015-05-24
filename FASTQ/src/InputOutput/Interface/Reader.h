@@ -3,6 +3,7 @@
 
 class Reader {
 public:
+    virtual bool GetBit(bool *val) = 0;
     virtual bool GetChar(unsigned char *val) = 0;
     virtual bool GetShort(unsigned short *val) = 0;
     virtual bool GetInt(unsigned int *val) = 0;

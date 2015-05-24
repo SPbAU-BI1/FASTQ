@@ -1,3 +1,7 @@
+inline bool BufferedReader::GetBit(bool *val) {
+	return 0;
+}
+
 inline bool BufferedReader::GetChar(unsigned char *val) {
     if (in_buff_l_ == readen_size_) {
         Read();
