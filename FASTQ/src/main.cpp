@@ -30,7 +30,6 @@ int main(int argc, char **argv) {
         printf(ANSI_COLOR_RESET);
         exit(1);
     }
-
     FASTQArchiver *archiver = new FASTQArchiver();
 
     if (!strcmp(argv[1], "-c")) {
@@ -55,5 +54,5 @@ int main(int argc, char **argv) {
             printf("%s\n", s.c_str());
             return 0;
         }
-    }
+    } 
 }

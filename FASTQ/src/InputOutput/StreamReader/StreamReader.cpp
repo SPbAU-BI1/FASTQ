@@ -20,8 +20,7 @@ StreamReader::StreamReader(const char *input_file_name, int block_size, int row_
     buffer_ = new char[kBufferSize]();
 }
 
-StreamReader::StreamReader(const StreamReader &reader) {
-    StreamReader(reader.file_name_, reader.block_size_, reader.row_number_);
+StreamReader::StreamReader(const StreamReader &reader): StreamReader(reader.file_name_, reader.block_size_, reader.row_number_) {
     cur_position_ = reader.cur_position_;
     cur_length_ = reader.cur_length_;
 }

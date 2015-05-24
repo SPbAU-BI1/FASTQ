@@ -20,8 +20,7 @@ BitReader::BitReader(const char *input_file_name) {
     in_buff_l_ = 0;
 }
 
-BitReader::BitReader(const BitReader &bitReader) {
-    BitReader(bitReader.file_name_);
+BitReader::BitReader(const BitReader &bitReader): BitReader(bitReader.file_name_) {
     readen_size_ = bitReader.readen_size_;
     in_buff_l_ = bitReader.in_buff_l_;
     for (size_t i = 0; i < kBuffSize; i++)
