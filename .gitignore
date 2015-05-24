@@ -7,6 +7,8 @@
 *.pdf
 *.snm
 *.toc
+*.jpg
+*.vrb
 test_io/
 debug/
 bin/
