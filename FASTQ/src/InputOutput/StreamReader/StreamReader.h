@@ -11,7 +11,7 @@ class StreamReader: public Reader {
 public:
     StreamReader(const char *input_file_name, int block_size, int row_number);
     StreamReader(const StreamReader &reader);
-    Reader* Clone();
+    StreamReader* Clone();
 
     bool GetChar(unsigned char *ch) final;
     bool GetShort(unsigned short *sh) final;

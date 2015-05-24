@@ -21,15 +21,15 @@ BitReader::BitReader(const char *input_file_name) {
 }
 
 BitReader::BitReader(const BitReader &bitReader) {
-	BitReader(bitReader.file_name_);
-	readen_size_ = bitReader.readen_size_;
-	in_buff_l_ = bitReader.in_buff_l_;
-	for (size_t i = 0; i < kBuffSize; i++)
-		in_buffer_[i] = bitReader.in_buffer_[i];
+    BitReader(bitReader.file_name_);
+    readen_size_ = bitReader.readen_size_;
+    in_buff_l_ = bitReader.in_buff_l_;
+    for (size_t i = 0; i < kBuffSize; i++)
+        in_buffer_[i] = bitReader.in_buffer_[i];
 }
 
-Reader* BitReader::Clone() {
-	return new BitReader(*this);
+BitReader* BitReader::Clone() {
+    return new BitReader(*this);
 }
 
 BitReader::~BitReader() {

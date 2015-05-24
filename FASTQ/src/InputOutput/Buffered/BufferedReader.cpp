@@ -31,8 +31,8 @@ BufferedReader::BufferedReader(const BufferedReader &reader) {
     fseek(f_in_, ftell(reader.f_in_), SEEK_SET); 
 }
 
-Reader* BufferedReader::Clone() {
-	return new BufferedReader(*this);	
+BufferedReader* BufferedReader::Clone() {
+    return new BufferedReader(*this);   
 }
 
 BufferedReader::~BufferedReader() {

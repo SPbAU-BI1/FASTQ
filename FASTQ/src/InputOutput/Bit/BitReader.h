@@ -9,8 +9,8 @@
 class BitReader: public Reader {
 public:
     BitReader(const char *input_file_name);
-	BitReader(const BitReader &reader);
-	Reader* Clone();
+    BitReader(const BitReader &reader);
+    BitReader* Clone();
 
     bool GetBit(bool *b);
     bool GetChar(unsigned char *ch);

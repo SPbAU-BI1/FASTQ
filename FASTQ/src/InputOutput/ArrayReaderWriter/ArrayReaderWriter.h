@@ -10,7 +10,7 @@ class ArrayReaderWriter: public Reader, public Writer {
 public:
     ArrayReaderWriter();
     ArrayReaderWriter(const ArrayReaderWriter &arrayReaderWriter);
-    Reader* Clone();
+    ArrayReaderWriter* Clone();
     bool GetChar(unsigned char *ch) final;
     bool GetShort(unsigned short *sh) final;
     void PutChar(unsigned char ch) final;

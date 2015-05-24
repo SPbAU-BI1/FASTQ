@@ -21,17 +21,17 @@ StreamReader::StreamReader(const char *input_file_name, int block_size, int row_
 }
 
 StreamReader::StreamReader(const StreamReader &reader) {
-	StreamReader(reader.file_name_, reader.block_size_, reader.row_number_);
-	cur_position_ = reader.cur_position_;
-	cur_length_ = reader.cur_length_;
+    StreamReader(reader.file_name_, reader.block_size_, reader.row_number_);
+    cur_position_ = reader.cur_position_;
+    cur_length_ = reader.cur_length_;
 }
 
-Reader* StreamReader::Clone() {
-	return new StreamReader(*this);	
+StreamReader* StreamReader::Clone() {
+    return new StreamReader(*this); 
 }
 
 StreamReader::~StreamReader() {
     fclose(f_in_);
     delete [] buffer_;
-	delete [] file_name_;
+    delete [] file_name_;
 }

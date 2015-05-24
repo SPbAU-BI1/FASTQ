@@ -7,15 +7,15 @@ ArrayReaderWriter::ArrayReaderWriter(): read_position_(0), write_position_(0) {
 }
 
 ArrayReaderWriter::ArrayReaderWriter(const ArrayReaderWriter& arrayReaderWriter) {
-	data_ = new unsigned char[kBufferSize]();
-	for (int i = 0; i < kBufferSize; i++)
-		data_[i] = arrayReaderWriter.data_[i];
-	read_position_ = arrayReaderWriter.read_position_;
-	write_position_ = arrayReaderWriter.write_position_;
+    data_ = new unsigned char[kBufferSize]();
+    for (int i = 0; i < kBufferSize; i++)
+        data_[i] = arrayReaderWriter.data_[i];
+    read_position_ = arrayReaderWriter.read_position_;
+    write_position_ = arrayReaderWriter.write_position_;
 }
 
-Reader* ArrayReaderWriter::Clone() {
-	return new ArrayReaderWriter(*this);
+ArrayReaderWriter* ArrayReaderWriter::Clone() {
+    return new ArrayReaderWriter(*this);
 }
 
 void ArrayReaderWriter::Flush() {}
