@@ -12,14 +12,14 @@
 #include <stdio.h>
 
 void FASTQArchiver::Compress(const char *input_file_name, const char *output_file_name) {
-    BitWriter *compress_writer = new BitWriter(output_file_name); 
+    BufferedWriter *compress_writer = new BufferedWriter(output_file_name); 
     long long begin[kBlockSize], end[kBlockSize];
     
     compress_writer->setOffset(2 * kBlockSize * sizeof(unsigned long long));
 
     for (int i = 0; i < kBlockSize; i++) {
         begin[i] = compress_writer->getOffset();
-        Archiver *archiver = new HuffmanArchiver();
+        Archiver *archiver = new LZWArchiver();
         StreamReader *compress_reader = new StreamReader(input_file_name, kBlockSize, i);
         archiver->Compress(compress_reader, compress_writer);
         compress_writer->Flush();
@@ -39,7 +39,7 @@ void FASTQArchiver::Compress(const char *input_file_name, const char *output_fil
 
 void FASTQArchiver::Decompress(const char *input_file_name, const char *output_file_name) {
     BufferedReader *reader = new BufferedReader(input_file_name);    
-    BitReader *readers[kBlockSize];
+    BufferedReader *readers[kBlockSize];
     Archiver *archivers[kBlockSize];
     ArrayReaderWriter *buffers[kBlockSize];
     
@@ -48,8 +48,8 @@ void FASTQArchiver::Decompress(const char *input_file_name, const char *output_f
     {
         reader->GetLong(&begin);
         reader->GetLong(&end);
-        readers[i] = new BitReader(input_file_name, begin, end);  
-        archivers[i] = new HuffmanArchiver();
+        readers[i] = new BufferedReader(input_file_name, begin, end);  
+        archivers[i] = new LZWArchiver();
         buffers[i] = new ArrayReaderWriter();
     } 
     delete reader;
