@@ -74,7 +74,7 @@ bool BitReader::GetChar(unsigned char *val) {
 
 bool BitReader::GetShort(unsigned short *val) {
     *val = 0;
-    unsigned char val1, val2;
+    unsigned char val1 = 0, val2 = 0;
 
     if (!(GetChar(&val1) & GetChar(&val2))) {
         return false;
@@ -86,7 +86,7 @@ bool BitReader::GetShort(unsigned short *val) {
 
 bool BitReader::GetInt(unsigned int *val) {
     *val = 0;
-    unsigned short val1, val2;
+    unsigned short val1 = 0, val2 = 0;
 
     if (!(GetShort(&val1) & GetShort(&val2))) {
         return false;
@@ -98,7 +98,7 @@ bool BitReader::GetInt(unsigned int *val) {
 
 bool BitReader::GetLong(unsigned long long *val) {
     *val = 0;
-    unsigned int val1, val2;
+    unsigned int val1 = 0, val2 = 0;
 
     if (!(GetInt(&val1) & GetInt(&val2))) {
         return false;

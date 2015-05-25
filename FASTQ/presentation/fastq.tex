@@ -50,7 +50,7 @@
     Кравченко Дмитрий \\
     Бойкий Дмитрий \\ 
     \vspace{\baselineskip}
-    \footnotesize Руководитель: Пржибельский Андрей 
+    \footnotesize Руководитель: Пржибельский Андрей Дмитриевич
 }
 \institute[]{Санкт-Петербургский Академический университет}
 \date{25 мая 2015 года}
@@ -77,7 +77,7 @@
 
         \item <2-> При считывании возможны ошибки
 
-	    \item <3-> Состоит из блоков данных
+        \item <3-> Состоит из блоков данных
 
         \begin{block}{Блок данных}
     
@@ -126,14 +126,14 @@ s = \textcolor{orange}{a}bacaba
 
 \begin{tikzpicture}[]
 \node [cur] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$}	
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$}   
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		edge from parent node[left] {$b$}
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -149,14 +149,14 @@ s = \textcolor{green}{a}\textcolor{orange}{b}acaba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [cur] {$1$}	
-		edge from parent node[left] {$a$}
+    child {node [cur] {$1$} 
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		edge from parent node[left] {$b$}
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -172,17 +172,17 @@ s = \textcolor{blue}{ab}acaba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [new] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [new] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		edge from parent node[left] {$b$}
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -200,17 +200,17 @@ s = a\textcolor{green}{b}\textcolor{orange}{a}caba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [cur] {$2$}
-		edge from parent node[left] {$b$}
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -227,20 +227,20 @@ s = a\textcolor{blue}{ba}caba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [new] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [new] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -257,20 +257,20 @@ s = ab\textcolor{green}{a}\textcolor{orange}{c}aba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [cur] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [cur] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -287,23 +287,23 @@ s = ab\textcolor{blue}{ac}aba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		child{node [new] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        child{node [new] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -320,23 +320,23 @@ s = aba\textcolor{green}{c}\textcolor{orange}{a}ba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [cur] {$3$}
-		edge from parent node[left] {$c$}
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -353,26 +353,26 @@ s = aba\textcolor{blue}{ca}ba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		child{node [new] {$7$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$c$}
+        child{node [new] {$7$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -389,26 +389,26 @@ s = abac\textcolor{green}{a}\textcolor{orange}{b}a
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [cur] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [cur] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		child{node [state] {$7$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$c$}
+        child{node [state] {$7$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -425,26 +425,26 @@ s = abac\textcolor{green}{ab}\textcolor{orange}{a}
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [cur] {$4$}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [cur] {$4$}
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		child{node [state] {$7$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$c$}
+        child{node [state] {$7$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -461,29 +461,29 @@ s = abac\textcolor{blue}{aba}
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			child{node [new] {$8$}
-				edge from parent node[left] {$a$}
-			}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            child{node [new] {$8$}
+                edge from parent node[left] {$a$}
+            }
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		child{node [state] {$7$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$c$}
+        child{node [state] {$7$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -500,29 +500,29 @@ s = abacab\textcolor{green}{a}
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [cur] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			child{node [state] {$8$}
-				edge from parent node[left] {$a$}
-			}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [cur] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            child{node [state] {$8$}
+                edge from parent node[left] {$a$}
+            }
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		child{node [state] {$7$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$c$}
+        child{node [state] {$7$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -539,29 +539,29 @@ s = abacaba
 \begin{center}
 \begin{tikzpicture}[]
 \node [state] {$Root$} [->] [sibling distance=3cm]
-	child {node [state] {$1$} [sibling distance=1cm]
-		child{node [state] {$4$}
-			child{node [state] {$8$}
-				edge from parent node[left] {$a$}
-			}
-			edge from parent node[left] {$b$}
-		}
-		child{node [state] {$6$}
-			edge from parent node[left] {$c$}
-		}
-		edge from parent node[left] {$a$}
+    child {node [state] {$1$} [sibling distance=1cm]
+        child{node [state] {$4$}
+            child{node [state] {$8$}
+                edge from parent node[left] {$a$}
+            }
+            edge from parent node[left] {$b$}
+        }
+        child{node [state] {$6$}
+            edge from parent node[left] {$c$}
+        }
+        edge from parent node[left] {$a$}
     }
     child {node [state] {$2$}
-		child{node [state] {$5$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$b$}
+        child{node [state] {$5$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$b$}
     }
     child {node [state] {$3$}
-		child{node [state] {$7$}
-			edge from parent node[left] {$a$}
-		}
-		edge from parent node[left] {$c$}
+        child{node [state] {$7$}
+            edge from parent node[left] {$a$}
+        }
+        edge from parent node[left] {$c$}
     }
 ;
 \end{tikzpicture}
@@ -622,7 +622,7 @@ s = abacaba
 
 \begin{frame}{Алгоритм Хаффмана}
 
-	\includegraphics{huffman.jpg}
+    \includegraphics{huffman.jpg}
 
 \end{frame}
 
@@ -648,7 +648,7 @@ s = abacaba
 
     \begin{itemize}
     
-        \item <1-> Проект написан на C++ (Google C++ Style Guide)
+        \item <1-> Проект написан на C++ (Google Style)
 
         \item <2-> Для удобства работы в команде использовался git
 
@@ -660,10 +660,21 @@ s = abacaba
 
 \end{frame}
 
-\begin{frame}{Результаты}
+\begin{frame}[fragile]{Результаты}
     
-	Табличка
-    
+    \resizebox{\textwidth}{!}{  
+      \begin{tabular}[scale = 0.8]{|l || c | c | c |}
+    \hline
+    Archiver & input file size (MB) & output file size (MB) & compression rate\\
+    \hline
+        our & 63.50 & 20.65 & 0.31\\
+        gz & 63.50 & 24.29 & 0.38\\
+        zip & 63.50 & 24.29 & 0.38\\
+        rar & 63.50 & 21.53 & 0.34\\
+        bzip2 & 63.50 & 19.10 & 0.30\\
+    \hline
+    \end{tabular}
+    }
 \end{frame}
 
 \begin{frame}{}

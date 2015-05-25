@@ -37,9 +37,9 @@ public:
 
 private:
     
-    void CompressInit(Reader *reader, Writer *writer);   
+    void CompressInit(Reader *reader);   
     void TreeSave(Node *v, unsigned short ParentNum, int Type);
-    void TreeBuild(Reader *reader, Writer *writer);
+    void TreeBuild(Reader *reader);
     void Code(Node *a, string prefix);
     static bool comp(Node a, Node b);
 
@@ -51,8 +51,8 @@ private:
     bool was_build_;
     unsigned short tree_num_;       
     unsigned short sym_num_;    
-    int decompressed_index_;
-    long long unsigned file_length_;  
+    unsigned long long decompressed_index_;
+    unsigned long long file_length_;  
     
     string code_[kCharNum]; 
     Node tree_[kMaxNum];

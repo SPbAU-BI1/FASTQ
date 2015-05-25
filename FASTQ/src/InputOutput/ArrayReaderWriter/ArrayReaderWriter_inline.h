@@ -3,8 +3,8 @@ inline void ArrayReaderWriter::CorrectPosition(int &position) {
         position -= kBufferSize;
 }
 
-inline bool ArrayReaderWriter::GetBit(bool *val) {
-	return 0;
+inline bool ArrayReaderWriter::GetBit(bool*) {
+    return 0;
 }
 
 inline bool ArrayReaderWriter::GetChar(unsigned char *val) {
@@ -28,7 +28,7 @@ inline bool ArrayReaderWriter::GetShort(unsigned short *val) {
 }
 
 inline bool ArrayReaderWriter::GetInt(unsigned int *val) {
-    unsigned short val1, val2;
+    unsigned short val1 = 0, val2 = 0;
     if (!GetShort(&val1))
         return 0;
     if (!GetShort(&val2))
@@ -38,7 +38,7 @@ inline bool ArrayReaderWriter::GetInt(unsigned int *val) {
 }
 
 inline bool ArrayReaderWriter::GetLong(unsigned long long *val) {
-    unsigned int val1, val2;
+    unsigned int val1 = 0, val2 = 0;
     if (!GetInt(&val1))
         return 0;
     if (!GetInt(&val2))
@@ -47,7 +47,7 @@ inline bool ArrayReaderWriter::GetLong(unsigned long long *val) {
     return 1;
 }
 
-inline void ArrayReaderWriter::PutBit(bool val) {}
+inline void ArrayReaderWriter::PutBit(bool) {}
 
 inline void ArrayReaderWriter::PutChar(unsigned char val) {
     data_[write_position_++] = val;

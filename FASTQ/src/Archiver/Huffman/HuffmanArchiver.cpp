@@ -53,7 +53,7 @@ void HuffmanArchiver::Code(Node *a, string prefix)
     Code(a->r, prefix + "1");                            
 
 }
-void HuffmanArchiver::CompressInit(Reader *reader, Writer *writer)
+void HuffmanArchiver::CompressInit(Reader *reader)
 {    
     unsigned char sym;
     file_length_ = 0;
@@ -71,10 +71,9 @@ void HuffmanArchiver::Compress(Reader *reader, Writer *writer)
     unsigned short n = 0;
     long long sym_to_read = 0;
     unsigned char sym;
-    bool b;
     Node comp_tree[kMaxNum];
     Reader *newreader = reader->Clone();
-    CompressInit(reader,writer);                           
+    CompressInit(reader);                           
     
     for(int i = 0; i < kCharNum; i++)
         if (num_[i] > 0)
@@ -107,16 +106,14 @@ void HuffmanArchiver::Compress(Reader *reader, Writer *writer)
     for (int i = 0; i < kMaxNum; i++)
         is_sym_[i] = false;
     tree_num_ = 0;    
-    TreeSave(root_,0,0);
+    TreeSave(root_, 0, 0);
     
     writer->PutShort(tree_num_);    
-
     for(int i = 0; i < tree_num_; i++)
     {
         writer->PutShort(parent_[i]);
         writer->PutChar(type_[i]);                      
     } 
-
     writer->PutShort(sym_num_);    
     for(unsigned short i = 0; i < tree_num_; i++)
     {
@@ -126,8 +123,6 @@ void HuffmanArchiver::Compress(Reader *reader, Writer *writer)
             writer->PutChar(sym_[i]);
         }    
     }
-
-
     
     writer->PutLong(sym_to_read);                           
     writer->Flush();
@@ -147,22 +142,21 @@ void HuffmanArchiver::Compress(Reader *reader, Writer *writer)
 
 void HuffmanArchiver::Decompress(Reader *reader, Writer *writer)
 {   
-
     while (PutNextDecompressedPart(reader,writer)); 
-
 }
+
 bool HuffmanArchiver::PutNextDecompressedPart(Reader *reader, Writer *writer)
 {
     if (!was_build_)
     {
-        TreeBuild(reader, writer);
+        TreeBuild(reader);
         was_build_ = true;  
         reader->GetLong(&file_length_);
     }                             
     if (decompressed_index_ == file_length_)   
         return 0;
     int read_num = 0;
-    bool b,end_of_file = false; 
+    bool b; 
     Node *cur_node;
     cur_node = &tree_[0];
     while(read_num <= kOpNum && decompressed_index_ < file_length_ && reader->GetBit(&b))
@@ -184,7 +178,7 @@ bool HuffmanArchiver::PutNextDecompressedPart(Reader *reader, Writer *writer)
 }
 
 
-void HuffmanArchiver::TreeBuild(Reader *reader, Writer *writer)
+void HuffmanArchiver::TreeBuild(Reader *reader)
 {
     unsigned char type,sym;
     unsigned short num;    
@@ -214,12 +208,4 @@ void HuffmanArchiver::TreeBuild(Reader *reader, Writer *writer)
         tree_[num].value = "x";
         tree_[num].value[0] = sym;
     }
-
 }
-
-
-
-
-
-
-

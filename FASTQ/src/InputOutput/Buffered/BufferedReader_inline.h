@@ -1,5 +1,5 @@
-inline bool BufferedReader::GetBit(bool *val) {
-	return 0;
+inline bool BufferedReader::GetBit(bool*) {
+    return 0;
 }
 
 inline bool BufferedReader::GetChar(unsigned char *val) {
@@ -17,7 +17,7 @@ inline bool BufferedReader::GetChar(unsigned char *val) {
 
 inline bool BufferedReader::GetShort(unsigned short *val) {
     *val = 0;
-    unsigned char val1, val2;
+    unsigned char val1 = 0, val2 = 0;
 
     if (!(GetChar(&val1) & GetChar(&val2))) {
         return false;
@@ -29,7 +29,7 @@ inline bool BufferedReader::GetShort(unsigned short *val) {
 
 inline bool BufferedReader::GetInt(unsigned int *val) {
     *val = 0;
-    unsigned short val1, val2;
+    unsigned short val1 = 0, val2 = 0;
 
     if (!(GetShort(&val1) & GetShort(&val2))) {
         return false;
@@ -41,7 +41,7 @@ inline bool BufferedReader::GetInt(unsigned int *val) {
 
 inline bool BufferedReader::GetLong(unsigned long long *val) {
     *val = 0;
-    unsigned int val1, val2;
+    unsigned int val1 = 0, val2 = 0;
 
     if (!(GetInt(&val1) & GetInt(&val2))) {
         return false;

@@ -1,6 +1,6 @@
 #include <string.h>
 
-inline bool StreamReader::GetBit(bool *val) {
+inline bool StreamReader::GetBit(bool*) {
     return 0;
 }
 
@@ -22,7 +22,7 @@ inline bool StreamReader::GetChar(unsigned char *val) {
 }
 
 inline bool StreamReader::GetShort(unsigned short *val) {
-    unsigned char val1, val2;
+    unsigned char val1 = 0, val2 = 0;
     if (!GetChar(&val1))
         return 0;
     if (!GetChar(&val2))
@@ -32,7 +32,7 @@ inline bool StreamReader::GetShort(unsigned short *val) {
 }
 
 inline bool StreamReader::GetInt(unsigned int *val) {
-    unsigned short val1, val2;
+    unsigned short val1 = 0, val2 = 0;
     if (!GetShort(&val1))
         return 0;
     if (!GetShort(&val2))
@@ -42,7 +42,7 @@ inline bool StreamReader::GetInt(unsigned int *val) {
 }
 
 inline bool StreamReader::GetLong(unsigned long long *val) {
-    unsigned int val1, val2;
+    unsigned int val1 = 0, val2 = 0;
     if (!GetInt(&val1))
         return 0;
     if (!GetInt(&val2))

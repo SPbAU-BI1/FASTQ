@@ -3,7 +3,7 @@ inline void BufferedWriter::Flush() {
     out_buff_l_ = 0;
 }
 
-inline void BufferedWriter::PutBit(bool val) {}
+inline void BufferedWriter::PutBit(bool) {}
 
 inline void BufferedWriter::PutChar(unsigned char val) {
     if (out_buff_l_ == kBuffSize) {
