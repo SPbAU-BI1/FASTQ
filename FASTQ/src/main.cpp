@@ -1,5 +1,5 @@
 #include "Archiver/LZ77/LZ77Archiver.h"
-#include "Archiver/Huffman/Huffman.h"
+#include "Archiver/Huffman/HuffmanArchiver.h"
 #include "Archiver/LZW/LZWArchiver.h"
 #include "Archiver/FASTQ/FASTQArchiver.h"
 #include "InputOutput/Buffered/BufferedReader.h"

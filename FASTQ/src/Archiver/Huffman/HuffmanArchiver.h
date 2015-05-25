@@ -15,7 +15,6 @@ class Writer;
 
 struct Node
 {
-    
     Node *l = NULL;
     Node *r = NULL;
     string value = "";
@@ -44,18 +43,18 @@ private:
     void Code(Node *a, string prefix);
     static bool comp(Node a, Node b);
 
-	static const int kMaxNum = 10000;
+    static const int kMaxNum = 10000;
     static const int kOpNum = 100;  
     static const int kCharNum = 256;    
 
     Node *root_;
     bool was_build_;
-    unsigned short tree_num_;   	
-    unsigned short sym_num_;   	
+    unsigned short tree_num_;       
+    unsigned short sym_num_;    
     int decompressed_index_;
     long long unsigned file_length_;  
     
-	string code_[kCharNum];	
+    string code_[kCharNum]; 
     Node tree_[kMaxNum];
     int num_[kCharNum];
     unsigned short parent_[kMaxNum];

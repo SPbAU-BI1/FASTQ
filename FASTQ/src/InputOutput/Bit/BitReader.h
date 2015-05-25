@@ -5,10 +5,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <limits>
 
 class BitReader: public Reader {
 public:
-    BitReader(const char *input_file_name);
+    BitReader(const char *input_file_name, long long begin_offset = 0, long long end_offset = std::numeric_limits<long long>::max());
     BitReader(const BitReader &reader);
     BitReader* Clone();
 
@@ -25,6 +26,7 @@ private:
     inline void Read();
     FILE *f_in_;
     char *file_name_;
+    long long begin_offset_, end_offset_;
     char *in_buffer_;
     size_t in_buff_l_, readen_size_;
     const size_t kBuffSize = 1000;

@@ -1,6 +1,7 @@
 #include "FASTQArchiver.h"
                     
 #include "../LZW/LZWArchiver.h"
+#include "../Huffman/HuffmanArchiver.h"
 #include "../../InputOutput/Buffered/BufferedReader.h"
 #include "../../InputOutput/Buffered/BufferedWriter.h"
 #include "../../InputOutput/Bit/BitReader.h"
@@ -11,19 +12,19 @@
 #include <stdio.h>
 
 void FASTQArchiver::Compress(const char *input_file_name, const char *output_file_name) {
-    BufferedWriter *compress_writer = new BufferedWriter(output_file_name); 
+    BitWriter *compress_writer = new BitWriter(output_file_name); 
     long long begin[kBlockSize], end[kBlockSize];
     
     compress_writer->setOffset(2 * kBlockSize * sizeof(unsigned long long));
 
     for (int i = 0; i < kBlockSize; i++) {
         begin[i] = compress_writer->getOffset();
-        Archiver *archiver = new LZWArchiver();
-        //compress_writer->PutShort((1 << 16) - 1);
+        Archiver *archiver = new HuffmanArchiver();
         StreamReader *compress_reader = new StreamReader(input_file_name, kBlockSize, i);
         archiver->Compress(compress_reader, compress_writer);
         compress_writer->Flush();
         end[i] = compress_writer->getOffset();
+        //printf("%I64d\n", end[i] - begin[i]);
         delete compress_reader; 
         delete archiver;
     }
@@ -38,7 +39,7 @@ void FASTQArchiver::Compress(const char *input_file_name, const char *output_fil
 
 void FASTQArchiver::Decompress(const char *input_file_name, const char *output_file_name) {
     BufferedReader *reader = new BufferedReader(input_file_name);    
-    BufferedReader *readers[kBlockSize];
+    BitReader *readers[kBlockSize];
     Archiver *archivers[kBlockSize];
     ArrayReaderWriter *buffers[kBlockSize];
     
@@ -47,13 +48,12 @@ void FASTQArchiver::Decompress(const char *input_file_name, const char *output_f
     {
         reader->GetLong(&begin);
         reader->GetLong(&end);
-        readers[i] = new BufferedReader(input_file_name, begin, end);  
-        archivers[i] = new LZWArchiver();
+        readers[i] = new BitReader(input_file_name, begin, end);  
+        archivers[i] = new HuffmanArchiver();
         buffers[i] = new ArrayReaderWriter();
     } 
     delete reader;
     BufferedWriter *writer = new BufferedWriter(output_file_name);
-
     //decompresses a line from each uniform part and join it all together with help of cyclic array-buffer
     bool ended = 0;
     while (!ended) {

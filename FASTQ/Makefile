@@ -9,7 +9,7 @@ VPATH = $(srcdir) $(srcdir)/Archiver/Huffman $(srcdir)/Archiver/LZ77 $(srcdir)/A
 CXX = g++
 CXXFLAGS = -O2 -Wall -pedantic -Wextra -std=c++11
 
-sources = main.cpp Huffman.cpp LZ77Archiver.cpp LZWArchiver.cpp Trie.cpp TrieNode.cpp FASTQArchiver.cpp BufferedReader.cpp BufferedWriter.cpp StreamReader.cpp ArrayReaderWriter.cpp Generator.cpp BitReader.cpp BitWriter.cpp
+sources = main.cpp HuffmanArchiver.cpp LZ77Archiver.cpp LZWArchiver.cpp Trie.cpp TrieNode.cpp FASTQArchiver.cpp BufferedReader.cpp BufferedWriter.cpp StreamReader.cpp ArrayReaderWriter.cpp Generator.cpp BitReader.cpp BitWriter.cpp
 objects = $(sources:.cpp=.o)
 
 all: $(bindir) $(objdir) $(exec)

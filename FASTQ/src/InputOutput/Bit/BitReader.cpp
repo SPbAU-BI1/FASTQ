@@ -2,7 +2,8 @@
 
 #include <string>
 
-BitReader::BitReader(const char *input_file_name) {
+BitReader::BitReader(const char *input_file_name, long long begin_offset, long long end_offset): begin_offset_(begin_offset), 
+                                                                                                     end_offset_(end_offset) {
     f_in_ = fopen(input_file_name, "rb");
 
     if (f_in_ == NULL) {
@@ -11,20 +12,26 @@ BitReader::BitReader(const char *input_file_name) {
         throw s;
     }
 
-    in_buffer_ = new char[kBuffSize];
+    
 
+    in_buffer_ = new char[kBuffSize];
     file_name_ = new char[strlen(input_file_name) + 1]();
     strcpy(file_name_, input_file_name);
 
+    if (end_offset == std::numeric_limits<long long>::max()) {
+        fseek(f_in_, 0, SEEK_END);
+        end_offset_ = ftell(f_in_);
+    }
+    fseek(f_in_, begin_offset_, SEEK_SET);
     readen_size_ = 0;
     in_buff_l_ = 0;
 }
 
-BitReader::BitReader(const BitReader &bitReader): BitReader(bitReader.file_name_) {
-    readen_size_ = bitReader.readen_size_;
-    in_buff_l_ = bitReader.in_buff_l_;
+BitReader::BitReader(const BitReader &reader): BitReader(reader.file_name_, reader.begin_offset_, reader.end_offset_)  {
+    readen_size_ = reader.readen_size_;
+    in_buff_l_ = reader.in_buff_l_;
     for (size_t i = 0; i < kBuffSize; i++)
-        in_buffer_[i] = bitReader.in_buffer_[i];
+        in_buffer_[i] = reader.in_buffer_[i];
 }
 
 BitReader* BitReader::Clone() {

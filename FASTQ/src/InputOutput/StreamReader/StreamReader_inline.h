@@ -1,7 +1,7 @@
 #include <string.h>
 
 inline bool StreamReader::GetBit(bool *val) {
-	return 0;
+    return 0;
 }
 
 inline bool StreamReader::GetChar(unsigned char *val) {
@@ -17,6 +17,7 @@ inline bool StreamReader::GetChar(unsigned char *val) {
         cur_length_ = strlen(buffer_);
     }
     *val = buffer_[cur_position_++];
+    //fprintf(stderr, "c%cd\n", *val);
     return 1;   
 }
 

@@ -68,3 +68,13 @@ void BitWriter::PutLong(unsigned long long val) {
     PutInt(val & ((1ll << 32) - 1));
     PutInt(val / (1ll << 32));
 }
+
+void BitWriter::setOffset(long long offset) {
+    Flush();
+    fseek(f_out_, offset, SEEK_SET);
+}
+
+long long BitWriter::getOffset() {
+    Flush();
+    return ftell(f_out_);
+}

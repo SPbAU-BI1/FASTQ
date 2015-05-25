@@ -17,6 +17,9 @@ public:
     void PutLong(unsigned long long val);
     void Flush();
 
+    void setOffset(long long offset);
+    long long getOffset();
+    
     ~BitWriter();
 
 private:
